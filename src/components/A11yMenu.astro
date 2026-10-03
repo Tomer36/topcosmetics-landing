@@ -1,0 +1,106 @@
+---
+// Floating accessibility menu: text size, high contrast, underlined links,
+// no animations. Choices are kept in localStorage (key "tc-a11y") and applied
+// as classes on <html>; the matching styles are at the end of global.css.
+// The saved state is applied early by a small script in Base.astro's <head>.
+import Icon from './Icon.astro';
+import { localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const toggles = [
+  { key: 'contrast', label: t.a11y.contrast },
+  { key: 'links', label: t.a11y.links },
+  { key: 'motion', label: t.a11y.motion },
+] as const;
+---
+
+<div class="a11y" data-a11y>
+  <div class="a11y-panel card" id="a11y-panel" role="group" aria-label={t.a11y.title} hidden>
+    <p class="a11y-title">{t.a11y.title}</p>
+    <div class="a11y-size">
+      <span>{t.a11y.textSize}</span>
+      <button type="button" data-a11y-size="-1" aria-label={t.a11y.smaller}>A−</button>
+      <button type="button" data-a11y-size="1" aria-label={t.a11y.bigger}>A+</button>
+    </div>
+    {
+      toggles.map((item) => (
+        <button class="a11y-toggle" type="button" data-a11y-toggle={item.key} aria-pressed="false">
+          <span>{item.label}</span>
+          <Icon name="check" size={16} />
+        </button>
+      ))
+    }
+    <button class="a11y-reset" type="button" data-a11y-reset>{t.a11y.reset}</button>
+    <a class="a11y-link" href={localePath(locale, '/accessibility/')}>{t.legal.accessibility.nav}</a>
+  </div>
+  <button
+    class="a11y-btn"
+    type="button"
+    aria-label={t.a11y.open}
+    aria-expanded="false"
+    aria-controls="a11y-panel"
+    data-a11y-open
+  >
+    <Icon name="accessibility" size={24} />
+  </button>
+</div>
+
+<script is:inline>
+  (function () {
+    var KEY = 'tc-a11y';
+    var root = document.documentElement;
+    var box = document.querySelector('[data-a11y]');
+    if (!box) return;
+    var panel = box.querySelector('.a11y-panel');
+    var opener = box.querySelector('[data-a11y-open]');
+    var state = { size: 0, contrast: false, links: false, motion: false };
+    try {
+      var saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+      for (var k in state) if (k in saved) state[k] = saved[k];
+    } catch (e) {}
+
+    function apply() {
+      root.classList.toggle('a11y-size-1', state.size === 1);
+      root.classList.toggle('a11y-size-2', state.size === 2);
+      ['contrast', 'links', 'motion'].forEach(function (name) {
+        root.classList.toggle('a11y-' + name, !!state[name]);
+        var btn = box.querySelector('[data-a11y-toggle="' + name + '"]');
+        if (btn) btn.setAttribute('aria-pressed', String(!!state[name]));
+      });
+      box.querySelector('[data-a11y-size="-1"]').disabled = state.size === 0;
+      box.querySelector('[data-a11y-size="1"]').disabled = state.size === 2;
+      try {
+        localStorage.setItem(KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+    function setOpen(open) {
+      panel.hidden = !open;
+      opener.setAttribute('aria-expanded', String(open));
+    }
+
+    box.addEventListener('click', function (e) {
+      var el = e.target.closest('button');
+      if (!el) return;
+      if (el === opener) return setOpen(panel.hidden);
+      if (el.dataset.a11ySize) state.size = Math.max(0, Math.min(2, state.size + Number(el.dataset.a11ySize)));
+      else if (el.dataset.a11yToggle) state[el.dataset.a11yToggle] = !state[el.dataset.a11yToggle];
+      else if ('a11yReset' in el.dataset) state = { size: 0, contrast: false, links: false, motion: false };
+      apply();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !panel.hidden) {
+        setOpen(false);
+        opener.focus();
+      }
+    });
+    document.addEventListener('click', function (e) {
+      if (!panel.hidden && !box.contains(e.target)) setOpen(false);
+    });
+    apply();
+  })();
+</script>

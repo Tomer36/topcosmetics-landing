@@ -1,0 +1,130 @@
+---
+// One page per team member. Members and photos: `team` in src/config/site.ts.
+// Texts: "therapists" in src/i18n/*.json.
+import { Image } from 'astro:assets';
+import Base from '../../../layouts/Base.astro';
+import Icon from '../../../components/Icon.astro';
+import Cta from '../../../components/Cta.astro';
+import { services, site, team } from '../../../config/site';
+import { teamPhoto } from '../../../config/photos';
+import { breadcrumbSchema, personSchema } from '../../../config/schema';
+import { localeCodes, localePath, locales, memberText, serviceText, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return localeCodes.flatMap((locale) =>
+    team.map((member) => ({
+      params: { lang: locales[locale].prefix || undefined, member: member.key },
+      props: { locale, memberKey: member.key },
+    })),
+  );
+}
+
+interface Props {
+  locale: Locale;
+  memberKey: string;
+}
+
+const { locale, memberKey } = Astro.props;
+const t = useTranslations(locale);
+const member = team.find((item) => item.key === memberKey)!;
+const m = memberText(locale, memberKey);
+const photo = teamPhoto(member.photo);
+const path = `/team/${memberKey}/`;
+const url = new URL(localePath(locale, path), site.url).href;
+const homeUrl = new URL(localePath(locale, '/'), site.url).href;
+// Treatments this person performs, in the site's usual order.
+const treatments = services.filter((s) => (member.services as readonly string[]).includes(s.slug));
+
+const description = m.paragraphs[0].length > 158 ? `${m.paragraphs[0].slice(0, 155)}…` : m.paragraphs[0];
+const schema = [
+  personSchema({ name: m.name, jobTitle: m.role, url }),
+  breadcrumbSchema([
+    { name: t.nav.home, url: homeUrl },
+    { name: t.about.team.title, url: `${homeUrl}#team` },
+    { name: m.name, url },
+  ]),
+];
+---
+
+<Base
+  locale={locale}
+  title={`${m.name} – ${m.role} | ${t.site.name}`}
+  description={description}
+  path={path}
+  schema={schema}
+>
+  <section class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" aria-label={t.nav.breadcrumb}>
+        <ol>
+          <li><a href={localePath(locale, '/')}>{t.nav.home}</a></li>
+          <li><a href={`${localePath(locale, '/')}#team`}>{t.about.team.title}</a></li>
+          <li aria-current="page">{m.name}</li>
+        </ol>
+      </nav>
+      <h1>{m.name}</h1>
+      <p class="lead">{m.role}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container stack">
+      <div class:list={['card', 'therapist', { 'no-photo': !photo }]}>
+        {
+          photo && (
+            <Image
+              src={photo}
+              alt={m.photoAlt}
+              width={540}
+              height={675}
+              fit="cover"
+              position="top"
+              widths={[270, 400, 540]}
+              sizes="(min-width: 700px) 340px, 100vw"
+              format="webp"
+              quality={78}
+              loading="eager"
+              decoding="async"
+            />
+          )
+        }
+        <div class="therapist-body">
+          <p class="chip">{m.eyebrow}</p>
+          <div class="prose">
+            {m.paragraphs.map((p) => <p>{p}</p>)}
+          </div>
+          <ul class="check-list">
+            {
+              m.points.map((point) => (
+                <li>
+                  <Icon name="check" size={18} />
+                  <span>{point}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      {
+        treatments.length > 0 && (
+          <div class="card">
+            <h2>{t.team.treatments}</h2>
+            <ul class="contact-links team-treatments">
+              {treatments.map((s) => (
+                <li>
+                  <a class="btn btn-tonal btn-sm" href={localePath(locale, `/services/${s.slug}/`)}>
+                    <Icon name={s.icon} />
+                    {serviceText(locale, s.slug).name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <Cta locale={locale} />
+</Base>

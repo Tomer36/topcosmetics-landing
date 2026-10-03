@@ -1,0 +1,70 @@
+---
+// Contact card: the address, four action tiles (WhatsApp, call, Waze, Google Maps)
+// and round links to the clinic's Google page and social profiles.
+import Icon from './Icon.astro';
+import { site, telLink, whatsappLink } from '../config/site';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const tiles = [
+  { icon: 'whatsapp', label: t.common.whatsapp, sub: t.common.sendWhatsapp, href: whatsappLink(t.wa.general), ltr: false, external: true },
+  { icon: 'phone', label: t.common.phone, sub: site.phone.display, href: telLink, ltr: true, external: false },
+  { icon: 'navigation', label: 'Waze', sub: t.common.navigate, href: site.maps.waze, ltr: false, external: true },
+  { icon: 'pin', label: 'Google Maps', sub: t.common.map, href: site.maps.google, ltr: false, external: true },
+] as const;
+
+const profiles = [
+  { icon: 'instagram', label: t.common.instagram, href: site.social.instagram },
+  { icon: 'facebook', label: t.common.facebook, href: site.social.facebook },
+  { icon: 'star', label: t.common.googlePage, href: site.googleProfile },
+].filter((p) => p.href) as { icon: 'instagram' | 'facebook' | 'star'; label: string; href: string }[];
+---
+
+<p class="contact-address">
+  <Icon name="pin" size={18} />
+  <span>
+    <span class="sr-only">{t.common.address}: </span>
+    {t.common.addressText}
+  </span>
+</p>
+
+<ul class="contact-tiles">
+  {
+    tiles.map((tile) => (
+      <li>
+        <a
+          class="contact-tile"
+          href={tile.href}
+          target={tile.external ? '_blank' : undefined}
+          rel={tile.external ? 'noopener' : undefined}
+        >
+          <span class="icon-badge">
+            <Icon name={tile.icon} size={20} />
+          </span>
+          <span class="tile-label">{tile.label}</span>
+          <span class="tile-sub">{tile.ltr ? <bdi dir="ltr">{tile.sub}</bdi> : tile.sub}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+{
+  profiles.length > 0 && (
+    <ul class="contact-profiles" aria-label={t.common.followUs}>
+      {profiles.map((profile) => (
+        <li>
+          <a href={profile.href} target="_blank" rel="noopener" aria-label={profile.label}>
+            <Icon name={profile.icon} size={20} />
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}

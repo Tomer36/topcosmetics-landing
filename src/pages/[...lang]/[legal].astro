@@ -1,0 +1,60 @@
+---
+// Accessibility statement, privacy policy and terms of use.
+// Texts: "legal" in src/i18n/*.json. Slugs: legalPages in src/config/site.ts.
+import Base from '../../layouts/Base.astro';
+import { legalPages, site } from '../../config/site';
+import { fill, localeCodes, locales, useTranslations, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return localeCodes.flatMap((locale) =>
+    legalPages.map((page) => ({
+      params: { lang: locales[locale].prefix || undefined, legal: page },
+      props: { locale, page },
+    })),
+  );
+}
+
+interface Props {
+  locale: Locale;
+  page: (typeof legalPages)[number];
+}
+
+const { locale, page } = Astro.props;
+const t = useTranslations(locale);
+const doc = t.legal[page];
+const values = { phone: site.phone.display };
+---
+
+<Base locale={locale} title={doc.seo.title} description={doc.seo.description} path={`/${page}/`}>
+  <section class="page-head">
+    <div class="container">
+      <h1>{doc.title}</h1>
+      <p class="lead">{doc.lead}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="card legal">
+        {
+          doc.sections.map((section) => (
+            <section>
+              <h2>{section.title}</h2>
+              {section.paragraphs.map((p) => (
+                <p>{fill(p, values)}</p>
+              ))}
+              {section.items.length > 0 && (
+                <ul>
+                  {section.items.map((item) => (
+                    <li>{fill(item, values)}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))
+        }
+        <p class="updated">{t.legal.updated}</p>
+      </div>
+    </div>
+  </section>
+</Base>

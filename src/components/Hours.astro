@@ -1,0 +1,73 @@
+---
+// Opening hours, with days that share the same hours grouped into one row
+// and an "open now / closed now" badge worked out in Israel time.
+// The hours themselves are in src/config/site.ts.
+import { site } from '../config/site';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+// "09:30–19:00" → [mo, tu, th, fr], … ; closed days go last.
+const groups: { time: string | null; days: string[] }[] = [];
+for (const h of site.hours) {
+  const time = h.open ? `${h.open}–${h.close}` : null;
+  const group = groups.find((g) => g.time === time);
+  if (group) group.days.push(h.day);
+  else groups.push({ time, days: [h.day] });
+}
+groups.sort((a, b) => Number(a.time === null) - Number(b.time === null));
+
+const byDay = Object.fromEntries(site.hours.filter((h) => h.open).map((h) => [h.day, [h.open, h.close]]));
+const dayNames = t.common.daysShort as Record<string, string>;
+---
+
+<div class="hours" data-hours={JSON.stringify(byDay)}>
+  <p class="open-badge" data-open={t.common.openNow} data-closed={t.common.closedNow} hidden></p>
+  <ul>
+    {
+      groups.map((group) => (
+        <li class:list={{ 'is-closed': !group.time }} data-days={group.days.join(' ')}>
+          <span class="hours-days">{group.days.map((d) => dayNames[d]).join(t.common.listSeparator)}</span>
+          <span class="hours-time">{group.time ? <bdi dir="ltr">{group.time}</bdi> : t.common.closed}</span>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script is:inline>
+  // Mark today's row and say whether the clinic is open right now (Israel time).
+  document.querySelectorAll('.hours[data-hours]').forEach(function (box) {
+    try {
+      var hours = JSON.parse(box.dataset.hours);
+      var parts = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Jerusalem',
+        weekday: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23',
+      }).formatToParts(new Date());
+      var get = function (type) {
+        return parts.filter(function (p) {
+          return p.type === type;
+        })[0].value;
+      };
+      var day = get('weekday').slice(0, 2).toLowerCase();
+      var now = get('hour') + ':' + get('minute');
+      var today = hours[day];
+      var open = !!today && now >= today[0] && now < today[1];
+      var badge = box.querySelector('.open-badge');
+      badge.textContent = open ? badge.dataset.open : badge.dataset.closed;
+      badge.classList.toggle('is-open', open);
+      badge.hidden = false;
+      box.querySelectorAll('li').forEach(function (row) {
+        if ((' ' + row.dataset.days + ' ').indexOf(' ' + day + ' ') > -1) row.classList.add('is-today');
+      });
+    } catch (e) {}
+  });
+</script>

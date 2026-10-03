@@ -1,0 +1,65 @@
+---
+// "The team" section: one compact card per team member, each linking to that
+// person's own page (src/pages/[...lang]/team/[member].astro).
+// Who appears, in which order, and their photos: `team` in src/config/site.ts.
+// Texts: "therapists" in src/i18n/*.json.
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { team } from '../config/site';
+import { teamPhoto } from '../config/photos';
+import { localePath, memberText, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const cards = team.map((item) => ({ ...item, text: memberText(locale, item.key), image: teamPhoto(item.photo) }));
+---
+
+<section class="section" id="team" aria-labelledby="team-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="team-title">{t.about.team.title}</h2>
+    </div>
+    <ul class="team-grid">
+      {
+        cards.map(({ key, text: m, image }) => (
+          <li>
+            <a class="card team-card" href={localePath(locale, `/team/${key}/`)}>
+              {image ? (
+                <Image
+                  src={image}
+                  alt=""
+                  width={192}
+                  height={192}
+                  fit="cover"
+                  position="top"
+                  densities={[1, 2]}
+                  format="webp"
+                  quality={78}
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <span class="team-avatar" aria-hidden="true">
+                  <Icon name="user" size={32} />
+                </span>
+              )}
+              <span class="team-text">
+                <span class="chip">{m.eyebrow}</span>
+                <h3>{m.name}</h3>
+                <span class="role">{m.role}</span>
+                <span class="more">
+                  {t.common.more}
+                  <Icon name="arrow" size={14} class="icon-dir" />
+                </span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

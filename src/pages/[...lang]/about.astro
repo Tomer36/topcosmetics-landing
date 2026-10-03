@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Cta from '../../components/Cta.astro';
+import Therapists from '../../components/Therapists.astro';
+import { localeStaticPaths, useTranslations, type Locale } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const equipmentIcons = ['laser', 'hydra', 'shield'] as const;
+---
+
+<Base locale={locale} title={t.about.seo.title} description={t.about.seo.description} path="/about/">
+  <section class="page-head">
+    <div class="container">
+      <h1>{t.about.title}</h1>
+      <p class="lead">{t.about.lead}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="clinic-title">
+    <div class="container">
+      <div class="split split-wide">
+        <ul class="card stats">
+          {
+            t.home.stats.map((stat) => (
+              <li>
+                <strong>{stat.value}</strong>
+                <span>{stat.label}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <div class="card">
+          <h2 id="clinic-title">{t.about.clinic.title}</h2>
+          <div class="prose">
+            {t.about.clinic.paragraphs.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Therapists locale={locale} />
+
+  <section class="section" aria-labelledby="equipment-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="equipment-title">{t.about.equipment.title}</h2>
+        <p>{t.about.equipment.lead}</p>
+      </div>
+      <ul class="grid grid-3">
+        {
+          t.about.equipment.items.map((item, i) => (
+            <li>
+              <div class="card">
+                <span class="icon-badge">
+                  <Icon name={equipmentIcons[i % equipmentIcons.length]} size={22} />
+                </span>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Cta locale={locale} />
+</Base>

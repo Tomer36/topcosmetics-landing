@@ -1,0 +1,184 @@
+---
+import Base from '../../../layouts/Base.astro';
+import Icon from '../../../components/Icon.astro';
+import ServiceCards from '../../../components/ServiceCards.astro';
+import Cta from '../../../components/Cta.astro';
+import { services, site, team, whatsappLink } from '../../../config/site';
+import { breadcrumbSchema, faqSchema, serviceSchema } from '../../../config/schema';
+import { fill, localeCodes, localePath, locales, memberText, serviceText, useTranslations, type Locale } from '../../../i18n';
+
+export function getStaticPaths() {
+  return localeCodes.flatMap((locale) =>
+    services.map((service) => ({
+      params: { lang: locales[locale].prefix || undefined, slug: service.slug },
+      props: { locale, slug: service.slug },
+    })),
+  );
+}
+
+interface Props {
+  locale: Locale;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+const t = useTranslations(locale);
+const s = serviceText(locale, slug);
+const path = `/services/${slug}/`;
+const url = new URL(localePath(locale, path), site.url).href;
+const homeUrl = new URL(localePath(locale, '/'), site.url).href;
+const waMessage = fill(t.wa.service, { service: s.name });
+// Team members who list this treatment in src/config/site.ts → team.
+const performers = team
+  .filter((member) => (member.services as readonly string[]).includes(slug))
+  .map((member) => ({ key: member.key, text: memberText(locale, member.key) }));
+
+const schema = [
+  serviceSchema({ name: s.name, description: s.seo.description, url, lang: locale }),
+  faqSchema(s.faq),
+  breadcrumbSchema([
+    { name: t.nav.home, url: homeUrl },
+    { name: t.nav.services, url: `${homeUrl}#services` },
+    { name: s.name, url },
+  ]),
+];
+---
+
+<Base
+  locale={locale}
+  title={s.seo.title}
+  description={s.seo.description}
+  path={path}
+  schema={schema}
+  waMessage={waMessage}
+>
+  <section class="page-head">
+    <div class="container">
+      <nav class="breadcrumb" aria-label={t.nav.breadcrumb}>
+        <ol>
+          <li><a href={localePath(locale, '/')}>{t.nav.home}</a></li>
+          <li><a href={`${localePath(locale, '/')}#services`}>{t.nav.services}</a></li>
+          <li aria-current="page">{s.name}</li>
+        </ol>
+      </nav>
+      <h1>{s.name}</h1>
+      <p class="lead">{s.short}</p>
+      <div class="btn-row desktop-only">
+        <a class="btn btn-primary" href={whatsappLink(waMessage)} target="_blank" rel="noopener">
+          <Icon name="whatsapp" />
+          {t.common.bookWhatsapp}
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container stack">
+      <div class="card">
+        <div class="prose">
+          {s.intro.map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+
+      {
+        s.types && (
+          <div class="card">
+            <h2>{s.types.title}</h2>
+            <ul class="chip-list">
+              {s.types.items.map((item) => (
+                <li class="chip">{item}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      {
+        performers.length > 0 && (
+          <div class="card">
+            <h2>{t.team.performedBy}</h2>
+            <ul class="contact-rows">
+              {performers.map(({ key, text: m }) => (
+                <li>
+                  <a class="contact-row performer" href={localePath(locale, `/team/${key}/`)}>
+                    <span class="icon-badge">
+                      <Icon name="user" size={18} />
+                    </span>
+                    <span class="contact-text">
+                      <span class="value">{m.name}</span>
+                      <span class="label">{m.role}</span>
+                    </span>
+                    <Icon name="arrow" size={16} class="icon-dir contact-chev" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )
+      }
+
+      <div class="split">
+        <div class="card">
+          <h2>{t.common.forWhoTitle}</h2>
+          <ul class="check-list">
+            {
+              s.forWho.map((item) => (
+                <li>
+                  <Icon name="check" size={18} />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+        <div class="card">
+          <h2>{t.common.expectTitle}</h2>
+          <ol class="steps">
+            {
+              s.expect.map((step) => (
+                <li>
+                  <h3>{step.title}</h3>
+                  <p>{step.text}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+
+      <div class="card faq">
+        <h2>{t.common.faqTitle}</h2>
+        {
+          s.faq.map((item) => (
+            <details>
+              <summary>
+                <h3>{item.q}</h3>
+                <Icon name="chevron" />
+              </summary>
+              <p>{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+
+      <!-- The medical disclaimer lives here, on the treatment pages, not in the site footer. -->
+      <p class="disclaimer">{t.common.disclaimer}</p>
+    </div>
+  </section>
+
+  <Cta
+    locale={locale}
+    title={fill(t.cta.serviceTitle, { service: s.name })}
+    text={t.cta.serviceText}
+    waMessage={waMessage}
+  />
+
+  <section class="section" aria-labelledby="other-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="other-title">{t.common.otherServices}</h2>
+      </div>
+      <ServiceCards locale={locale} exclude={slug} />
+    </div>
+  </section>
+</Base>

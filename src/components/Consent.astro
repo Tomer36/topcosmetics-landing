@@ -1,0 +1,81 @@
+---
+// Cookie consent + Google Analytics 4.
+// Rendered ONLY when PUBLIC_GA4_ID is set at build time. Without it the site sets
+// no cookies, so there is nothing to ask consent for and no banner is shown.
+// With it, GA is loaded only after the visitor presses "accept"; the choice is kept
+// in localStorage and can be changed from the "cookie settings" button in the footer.
+import { localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const gaId = import.meta.env.PUBLIC_GA4_ID;
+---
+
+{
+  gaId && (
+    <>
+      <div class="consent card" id="consent" role="region" aria-label={t.consent.label} hidden>
+        <p>
+          {t.consent.text} <a href={localePath(locale, '/privacy/')}>{t.legal.privacy.nav}</a>
+        </p>
+        <div class="btn-row">
+          <button class="btn btn-primary btn-sm" type="button" data-consent="granted">
+            {t.consent.accept}
+          </button>
+          <button class="btn btn-secondary btn-sm" type="button" data-consent="denied">
+            {t.consent.decline}
+          </button>
+        </div>
+      </div>
+      <script is:inline define:vars={{ gaId }}>
+        (function () {
+          var KEY = 'tc-consent';
+          var box = document.getElementById('consent');
+          var loaded = false;
+          function loadGa() {
+            window['ga-disable-' + gaId] = false;
+            if (loaded) return;
+            loaded = true;
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function () {
+              window.dataLayer.push(arguments);
+            };
+            window.gtag('js', new Date());
+            window.gtag('config', gaId);
+          }
+          var choice = null;
+          try {
+            choice = localStorage.getItem(KEY);
+          } catch (e) {}
+          if (choice === 'granted') loadGa();
+          else if (choice !== 'denied') box.hidden = false;
+
+          box.addEventListener('click', function (e) {
+            var btn = e.target.closest('[data-consent]');
+            if (!btn) return;
+            try {
+              localStorage.setItem(KEY, btn.dataset.consent);
+            } catch (e) {}
+            box.hidden = true;
+            if (btn.dataset.consent === 'granted') loadGa();
+            else window['ga-disable-' + gaId] = true;
+          });
+          document.querySelectorAll('[data-consent-reset]').forEach(function (el) {
+            el.addEventListener('click', function () {
+              box.hidden = false;
+              box.querySelector('button').focus();
+            });
+          });
+        })();
+      </script>
+    </>
+  )
+}

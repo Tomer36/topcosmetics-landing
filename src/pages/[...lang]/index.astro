@@ -1,0 +1,138 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import ServiceCards from '../../components/ServiceCards.astro';
+import Hours from '../../components/Hours.astro';
+import ContactDetails from '../../components/ContactDetails.astro';
+import Therapists from '../../components/Therapists.astro';
+import Gallery from '../../components/Gallery.astro';
+import { whatsappLink } from '../../config/site';
+import { localePath, localeStaticPaths, useTranslations, type Locale } from '../../i18n';
+import heroPhoto from '../../assets/gallery/07-front-desk.jpg';
+
+export const getStaticPaths = localeStaticPaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const whyIcons = ['award', 'shield', 'lock', 'users'] as const;
+---
+
+<Base locale={locale} title={t.home.seo.title} description={t.home.seo.description} path="/">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <h1 id="hero-title">
+          {t.home.hero.title}
+          <span>{t.home.hero.subtitle}</span>
+        </h1>
+        <p class="lead">{t.home.hero.lead}</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href={whatsappLink(t.wa.general)} target="_blank" rel="noopener">
+            <Icon name="whatsapp" />
+            {t.common.bookWhatsapp}
+          </a>
+        </div>
+      </div>
+      <Image
+        class="hero-photo"
+        src={heroPhoto}
+        alt={t.home.hero.photoAlt}
+        width={1100}
+        height={733}
+        widths={[400, 640, 800, 1100]}
+        sizes="(min-width: 900px) 540px, 100vw"
+        format="webp"
+        quality={70}
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <ul class="hero-stats">
+        {
+          t.home.stats.map((stat) => (
+            <li>
+              <strong>{stat.value}</strong>
+              <span>{stat.label}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="services" aria-labelledby="services-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="services-title">{t.home.services.title}</h2>
+        <p>{t.home.services.lead}</p>
+      </div>
+      <ServiceCards locale={locale} />
+    </div>
+  </section>
+
+  <Therapists locale={locale} />
+
+  <section class="section" aria-labelledby="why-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="why-title">{t.home.why.title}</h2>
+      </div>
+      <ul class="card why-list">
+        {
+          t.home.why.items.map((item, i) => (
+            <li>
+              <span class="icon-badge">
+                <Icon name={whyIcons[i % whyIcons.length]} size={20} />
+              </span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="gallery-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="gallery-title">{t.gallery.homeTitle}</h2>
+        <p>{t.gallery.lead}</p>
+      </div>
+      <!-- The first six photos; the rest are on the gallery page. -->
+      <Gallery locale={locale} limit={6} />
+      <div class="btn-row gallery-more">
+        <a class="btn btn-secondary" href={localePath(locale, '/gallery/')}>
+          {t.gallery.all}
+          <Icon name="arrow" class="icon-dir" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="visit-title">
+    <div class="container">
+      <div class="section-head">
+        <h2 id="visit-title">{t.home.visit.title}</h2>
+        <p>{t.home.visit.lead}</p>
+      </div>
+      <div class="split">
+        <div class="card">
+          <h3>{t.common.hours}</h3>
+          <Hours locale={locale} />
+        </div>
+        <div class="card">
+          <h3>{t.contact.detailsTitle}</h3>
+          <ContactDetails locale={locale} />
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

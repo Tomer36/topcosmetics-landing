@@ -1,0 +1,55 @@
+---
+import Logo from './Logo.astro';
+import { legalPages, site } from '../config/site';
+import { localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+const hasAnalytics = Boolean(import.meta.env.PUBLIC_GA4_ID);
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <Logo locale={locale} variant="footer" />
+        <p>{t.footer.about}</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <nav class="footer-legal" aria-label={t.legal.navLabel}>
+        <ul>
+          {
+            legalPages.map((page) => (
+              <li>
+                <a href={localePath(locale, `/${page}/`)}>{t.legal[page].nav}</a>
+              </li>
+            ))
+          }
+          {
+            hasAnalytics && (
+              <li>
+                <button type="button" data-consent-reset>
+                  {t.consent.settings}
+                </button>
+              </li>
+            )
+          }
+        </ul>
+      </nav>
+      <p class="credit">
+        © {year} {t.site.name}
+        <span class="credit-sep" aria-hidden="true">·</span>
+        <span lang="en" dir="ltr">
+          Powered by <a href={site.credit.url} target="_blank" rel="noopener">{site.credit.name}</a>
+        </span>
+      </p>
+    </div>
+  </div>
+</footer>

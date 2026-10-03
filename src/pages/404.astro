@@ -1,0 +1,32 @@
+---
+// Served by Hostinger for unknown URLs (see public/.htaccess). One file for all
+// languages, so it shows the message in every language.
+import Base from '../layouts/Base.astro';
+import { defaultLocale, localeCodes, localePath, useTranslations } from '../i18n';
+
+const t = useTranslations(defaultLocale);
+---
+
+<Base locale={defaultLocale} title={`${t.notFound.title} | ${t.site.name}`} description={t.notFound.text} path="/" noindex>
+  <section class="page-head">
+    <div class="container stack">
+      <h1>404</h1>
+      {
+        localeCodes.map((code) => {
+          const tr = useTranslations(code);
+          return (
+            <div class="card" lang={code}>
+              <h2>{tr.notFound.title}</h2>
+              <p>{tr.notFound.text}</p>
+              <div class="btn-row">
+                <a class="btn btn-primary" href={localePath(code, '/')}>
+                  {tr.notFound.home}
+                </a>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</Base>

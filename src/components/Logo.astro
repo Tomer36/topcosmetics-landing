@@ -1,0 +1,30 @@
+---
+// Header and footer both use the full logo without the circle.
+// Both files are generated from the original artwork by `npm run logo`.
+import { Image } from 'astro:assets';
+import full from '../assets/logo-full.png';
+import { localePath, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  variant?: 'header' | 'footer';
+}
+
+const { locale, variant = 'header' } = Astro.props;
+const t = useTranslations(locale);
+// Header: the logo without the circle (swap `full` for `circle` to use the round one).
+const src = full;
+const height = variant === 'footer' ? 120 : 58;
+---
+
+<a class:list={['logo', `logo-${variant}`]} href={localePath(locale, '/')}>
+  <Image
+    src={src}
+    alt={t.site.name}
+    height={height}
+    width={Math.round((src.width / src.height) * height)}
+    densities={[1, 2, 3]}
+    format="webp"
+    loading={variant === 'footer' ? 'lazy' : 'eager'}
+  />
+</a>

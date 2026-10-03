@@ -1,0 +1,172 @@
+---
+import '../styles/global.css';
+import heeboHebrew from '@fontsource-variable/heebo/files/heebo-hebrew-wght-normal.woff2?url';
+import heeboLatin from '@fontsource-variable/heebo/files/heebo-latin-wght-normal.woff2?url';
+import notoArabic from '@fontsource-variable/noto-sans-arabic/files/noto-sans-arabic-arabic-wght-normal.woff2?url';
+import notoLatin from '@fontsource-variable/noto-sans-arabic/files/noto-sans-arabic-latin-wght-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import Consent from '../components/Consent.astro';
+import A11yMenu from '../components/A11yMenu.astro';
+import { site, whatsappLink } from '../config/site';
+import { businessSchema } from '../config/schema';
+import { defaultLocale, localeCodes, localePath, locales, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  description: string;
+  /** Locale-independent path of this page, e.g. "/about/". */
+  path: string;
+  /** Extra JSON-LD nodes for this page (Service, FAQPage, …). */
+  schema?: object[];
+  /** Pre-filled WhatsApp message for the booking buttons in the header / mobile bar. */
+  waMessage?: string;
+  noindex?: boolean;
+}
+
+const { locale, title, description, path, schema = [], waMessage, noindex = false } = Astro.props;
+const t = useTranslations(locale);
+const { dir, og, font } = locales[locale];
+
+const abs = (p: string) => new URL(p, site.url).href;
+const canonical = abs(localePath(locale, path));
+const ogImage = abs(site.ogImage);
+const bookHref = whatsappLink(waMessage ?? t.wa.general);
+
+// Self-hosted fonts: only the family this language needs is declared and preloaded.
+const LATIN =
+  'U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD';
+const fontSets = {
+  heebo: {
+    family: 'Heebo Variable',
+    files: [
+      { url: heeboHebrew, range: 'U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F' },
+      { url: heeboLatin, range: LATIN },
+    ],
+  },
+  'noto-arabic': {
+    family: 'Noto Sans Arabic Variable',
+    files: [
+      {
+        url: notoArabic,
+        range: 'U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC',
+      },
+      { url: notoLatin, range: LATIN },
+    ],
+  },
+} as const;
+const fontSet = fontSets[font];
+const fontCss = fontSet.files
+  .map(
+    (f) =>
+      `@font-face{font-family:'${fontSet.family}';font-style:normal;font-display:swap;font-weight:100 900;src:url(${f.url}) format('woff2-variations');unicode-range:${f.range}}`,
+  )
+  .join('');
+
+const jsonLd = [businessSchema(), ...schema];
+---
+
+<!doctype html>
+<html lang={locale} dir={dir}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="format-detection" content="telephone=no" />
+
+    {
+      !noindex && (
+        <>
+          <link rel="canonical" href={canonical} />
+          {localeCodes.map((code) => (
+            <link rel="alternate" hreflang={code} href={abs(localePath(code, path))} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={abs(localePath(defaultLocale, path))} />
+        </>
+      )
+    }
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={t.site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={og} />
+    {
+      localeCodes
+        .filter((code) => code !== locale)
+        .map((code) => <meta property="og:locale:alternate" content={locales[code].og} />)
+    }
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${t.site.name} – ${t.site.tagline}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    {fontSet.files.map((f) => <link rel="preload" href={f.url} as="font" type="font/woff2" crossorigin />)}
+    <style set:html={fontCss} />
+
+    {jsonLd.map((node) => <script is:inline type="application/ld+json" set:html={JSON.stringify(node)} />)}
+
+    <script is:inline>
+      // Apply saved accessibility choices before the page paints (see A11yMenu.astro).
+      try {
+        var a = JSON.parse(localStorage.getItem('tc-a11y') || '{}');
+        var c = document.documentElement.classList;
+        if (a.size) c.add('a11y-size-' + a.size);
+        if (a.contrast) c.add('a11y-contrast');
+        if (a.links) c.add('a11y-links');
+        if (a.motion) c.add('a11y-motion');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{t.nav.skip}</a>
+    <Header locale={locale} path={path} bookHref={bookHref} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+    <MobileBar locale={locale} bookHref={bookHref} />
+    <!-- Optional Google Analytics 4 behind a consent banner; renders nothing unless PUBLIC_GA4_ID is set. -->
+    <Consent locale={locale} />
+    <A11yMenu locale={locale} />
+
+    <script is:inline>
+      // Mobile menu toggle
+      (function () {
+        var btn = document.querySelector('[data-menu-toggle]');
+        var nav = document.getElementById('site-nav');
+        if (!btn || !nav) return;
+        function setOpen(open) {
+          btn.setAttribute('aria-expanded', String(open));
+          btn.setAttribute('aria-label', open ? btn.dataset.closeLabel : btn.dataset.openLabel);
+          nav.toggleAttribute('data-open', open);
+        }
+        btn.addEventListener('click', function () {
+          setOpen(btn.getAttribute('aria-expanded') !== 'true');
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+            setOpen(false);
+            btn.focus();
+          }
+        });
+        nav.addEventListener('click', function (e) {
+          if (e.target.closest('a')) setOpen(false);
+        });
+      })();
+    </script>
+  </body>
+</html>

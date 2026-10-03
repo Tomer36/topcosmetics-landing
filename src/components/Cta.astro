@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+import { whatsappLink } from '../config/site';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  text?: string;
+  waMessage?: string;
+}
+
+const { locale, title, text, waMessage } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<section class="section desktop-only" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="card card-muted cta">
+      <div>
+        <h2 id="cta-title">{title ?? t.cta.title}</h2>
+        <p>{text ?? t.cta.text}</p>
+      </div>
+      <div class="btn-row">
+        <a class="btn btn-primary" href={whatsappLink(waMessage ?? t.wa.general)} target="_blank" rel="noopener">
+          <Icon name="whatsapp" />
+          {t.common.bookWhatsapp}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

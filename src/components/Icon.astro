@@ -1,0 +1,75 @@
+---
+// Outlined line icons, inline SVG (24×24 grid, stroke = currentColor).
+// Decorative by default; pass `label` only when the icon stands alone.
+interface Props {
+  name: keyof typeof icons;
+  size?: number;
+  label?: string;
+  class?: string;
+}
+
+const icons = {
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  phone:
+    '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  whatsapp:
+    '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M9.5 9.5c0 2.8 2.2 5 5 5"/>',
+  pin: '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+  clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  chevron: '<path d="M6 9l6 6 6-6"/>',
+  // Points left = "forward" in RTL. Flipped automatically in LTR (see .icon-dir in global.css).
+  arrow: '<path d="M19 12H5M12 19l-7-7 7-7"/>',
+  check: '<path d="M20 6L9 17l-5-5"/>',
+  calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  navigation: '<path d="M3 11l19-9-9 19-2-8-8-2z"/>',
+  parking: '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 0 1 0 6H9"/>',
+  zoom: '<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35M11 8v6M8 11h6"/>',
+  accessibility: '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="6.8" r="1.1"/><path d="M7.5 9.8l4.5 1 4.5-1M12 10.8v3.4M12 14.2l-2.4 4M12 14.2l2.4 4"/>',
+  // Treatment icons (drawn for this site)
+  laser: '<path d="M14.5 2.5l5 2.6-3.6 7-5-2.6z"/><path d="M12.6 11.2l-1 1.9"/><path d="M10.6 15l-1.2 2.4"/><path d="M3 20.5h18"/><path d="M6.2 17.3l-1.6-.9M9.4 20.5v0M12.6 18.2l1.6-.6M5.6 19.6l-1.8.2"/>',
+  face: '<path d="M12 3c4 0 6.5 3 6.5 7.5 0 5-3 10-6.5 10s-6.5-5-6.5-10C5.5 6 8 3 12 3z"/><path d="M6.1 7.6c3.6 1.3 8.2 1.3 11.8 0"/><path d="M8.6 11.6c.6.6 1.6.6 2.2 0M13.2 11.6c.6.6 1.6.6 2.2 0"/><path d="M10 15.6c1.2.9 2.8.9 4 0"/>',
+  hydra: '<path d="M11 4s5.5 5.2 5.5 9.8a5.5 5.5 0 0 1-11 0C5.5 9.2 11 4 11 4z"/><path d="M8.6 14.2a2.4 2.4 0 0 0 2.4 2.4"/><path d="M19 3.5v3.2M17.4 5.1h3.2"/><path d="M19.5 11v2M18.5 12h2"/>',
+  vial: '<path d="M9.5 3h5"/><path d="M10.5 3v3.2L8.5 9v10a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V9l-2-2.8V3"/><path d="M8.5 13h7"/><path d="M12 15.4v2.4M10.8 16.6h2.4"/>',
+  stones: '<ellipse cx="12" cy="18" rx="7.5" ry="2.8"/><ellipse cx="12" cy="12.5" rx="5.2" ry="2.4"/><ellipse cx="12" cy="7.6" rx="3.2" ry="2"/><path d="M12 2.2v1.2"/>',
+  brow: '<path d="M3.5 8.5c2.6-3 7.2-4 12.2-2.2 1.8.6 3.3 1.6 4.8 3"/><path d="M4.5 15.5s3-4 7.5-4 7.5 4 7.5 4-3 4-7.5 4-7.5-4-7.5-4z"/><circle cx="12" cy="15.5" r="1.9"/>',
+  lips: '<path d="M2.5 12c2.2-2.8 4.8-4.8 6.8-4.8 1.1 0 1.9.6 2.7 1.3.8-.7 1.6-1.3 2.7-1.3 2 0 4.6 2 6.8 4.8"/><path d="M2.5 12c2.6 3.8 5.8 5.8 9.5 5.8s6.9-2 9.5-5.8"/><path d="M2.5 12c3.2.9 6.3 1 9.5 1s6.3-.1 9.5-1"/>',
+  zap: '<path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>',
+  smile: '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/>',
+  droplet: '<path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>',
+  star: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
+  wind: '<path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>',
+  eye: '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>',
+  syringe: '<path d="M18 2l4 4M17 7l3-3M19 9L8.7 19.3a1 1 0 0 1-.7.3H5v-3a1 1 0 0 1 .3-.7L15 5M9 11l4 4M5 19l-3 3M14 4l6 6"/>',
+  heart:
+    '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>',
+  award: '<circle cx="12" cy="8" r="7"/><path d="M8.21 13.89L7 23l5-3 5 3-1.21-9.12"/>',
+  shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  lock: '<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  users:
+    '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  instagram:
+    '<rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37zM17.5 6.5h.01"/>',
+  facebook: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+} as const;
+
+const { name, size = 20, label, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['icon', className]}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+  set:html={icons[name]}
+/>

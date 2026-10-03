@@ -1,0 +1,40 @@
+---
+import Icon from './Icon.astro';
+import { services } from '../config/site';
+import { localePath, serviceText, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Slug to leave out (used on a service page for "other treatments"). */
+  exclude?: string;
+  /** Heading level of the card titles. */
+  level?: 'h2' | 'h3';
+}
+
+const { locale, exclude, level: Heading = 'h3' } = Astro.props;
+const t = useTranslations(locale);
+const items = services.filter((s) => s.slug !== exclude);
+---
+
+<ul class="service-grid">
+  {
+    items.map((s) => {
+      const text = serviceText(locale, s.slug);
+      return (
+        <li>
+          <a class="card service-card" href={localePath(locale, `/services/${s.slug}/`)}>
+            <span class="icon-badge">
+              <Icon name={s.icon} size={20} />
+            </span>
+            <Heading>{text.name}</Heading>
+            <p>{text.short}</p>
+            <span class="more">
+              {t.common.more}
+              <Icon name="arrow" size={14} class="icon-dir" />
+            </span>
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>

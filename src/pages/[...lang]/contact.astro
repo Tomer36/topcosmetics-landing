@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Hours from '../../components/Hours.astro';
+import ContactDetails from '../../components/ContactDetails.astro';
+import { localeStaticPaths, useTranslations, type Locale } from '../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<Base locale={locale} title={t.contact.seo.title} description={t.contact.seo.description} path="/contact/">
+  <section class="page-head">
+    <div class="container">
+      <h1>{t.contact.title}</h1>
+      <p class="lead">{t.contact.lead}</p>
+
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container stack">
+      <div class="split">
+        <div class="card">
+          <h2>{t.contact.detailsTitle}</h2>
+          <ContactDetails locale={locale} />
+        </div>
+        <div class="card">
+          <h2>{t.common.hours}</h2>
+          <Hours locale={locale} />
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>{t.contact.arrival.title}</h2>
+        <ul class="check-list">
+          {
+            t.contact.arrival.items.map((item) => (
+              <li>
+                <Icon name="check" size={18} />
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>

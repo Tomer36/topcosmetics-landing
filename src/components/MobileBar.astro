@@ -1,0 +1,24 @@
+---
+import Icon from './Icon.astro';
+import { telLink } from '../config/site';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  bookHref: string;
+}
+
+const { locale, bookHref } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<nav class="mobile-bar" aria-label={t.nav.quickActions}>
+  <a class="btn btn-primary" href={bookHref} target="_blank" rel="noopener">
+    <Icon name="whatsapp" />
+    {t.common.whatsapp}
+  </a>
+  <a class="btn btn-secondary" href={telLink}>
+    <Icon name="phone" />
+    {t.common.call}
+  </a>
+</nav>

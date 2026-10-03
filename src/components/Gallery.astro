@@ -1,0 +1,162 @@
+---
+// Photo grid + full-screen viewer. Photos come from src/assets/gallery/ (see src/config/gallery.ts).
+// Without JavaScript the thumbnails simply link to the large photo.
+import { getImage, Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { galleryPhotos } from '../config/gallery';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  /** Show only the first N photos. */
+  limit?: number;
+}
+
+const { locale, limit } = Astro.props;
+const t = useTranslations(locale);
+const alts = t.gallery.alts as Record<string, string>;
+const photos = await Promise.all(
+  (limit ? galleryPhotos.slice(0, limit) : galleryPhotos).map(async (photo) => ({
+    ...photo,
+    alt: alts[photo.key] ?? t.gallery.altFallback,
+    // never upscale a small original
+    large: await getImage({ src: photo.image, width: Math.min(1600, photo.image.width), format: 'webp', quality: 76 }),
+  })),
+);
+---
+
+<ul class="gallery">
+  {
+    photos.map((photo) => (
+      <li>
+        <a href={photo.large.src}>
+          <Image
+            src={photo.image}
+            alt={photo.alt}
+            width={Math.min(800, photo.image.width)}
+            height={Math.round(Math.min(800, photo.image.width) / 1.5)}
+            fit="cover"
+            widths={[240, 400, 640, 800].filter((w) => w <= photo.image.width)}
+            sizes="(min-width: 900px) 360px, 50vw"
+            format="webp"
+            quality={70}
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="zoom-badge" aria-hidden="true">
+            <Icon name="zoom" size={16} />
+          </span>
+          <span class="sr-only">{t.common.zoom}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<dialog class="lightbox" id="lightbox" aria-label={t.gallery.viewer}>
+  <div class="lightbox-stage"></div>
+  <button class="lightbox-btn lightbox-close" type="button" data-lb="close" aria-label={t.common.close}>
+    <Icon name="close" size={22} />
+  </button>
+  <button class="lightbox-btn lightbox-prev" type="button" data-lb="prev" aria-label={t.common.prevPhoto}>
+    <Icon name="arrow" size={22} class="icon-rev" />
+  </button>
+  <button class="lightbox-btn lightbox-next" type="button" data-lb="next" aria-label={t.common.nextPhoto}>
+    <Icon name="arrow" size={22} class="icon-dir" />
+  </button>
+</dialog>
+
+<script is:inline>
+  (function () {
+    var dlg = document.getElementById('lightbox');
+    if (!dlg || !dlg.showModal) return;
+    var stage = dlg.querySelector('.lightbox-stage');
+    var links = [].slice.call(document.querySelectorAll('.gallery a'));
+    var img = document.createElement('img');
+    stage.appendChild(img);
+    var current = 0;
+    var token = 0;
+
+    // Show the small photo that is already on screen straight away, then swap in
+    // the large one once it has downloaded — no empty frame, no jump.
+    function show(n, instant) {
+      current = (n + links.length) % links.length;
+      var thumb = links[current].querySelector('img');
+      var mine = ++token;
+      function swap() {
+        if (mine !== token) return;
+        img.alt = thumb.alt;
+        img.src = thumb.currentSrc || thumb.src;
+        img.classList.remove('is-switching');
+        var large = new Image();
+        large.onload = function () {
+          if (mine === token) img.src = large.src;
+        };
+        large.src = links[current].href;
+      }
+      if (instant) return swap();
+      img.classList.add('is-switching');
+      setTimeout(swap, 140);
+    }
+    function open(n) {
+      show(n, true);
+      dlg.classList.remove('is-closing');
+      dlg.showModal();
+    }
+    function close() {
+      if (dlg.classList.contains('is-closing')) return;
+      dlg.classList.add('is-closing');
+      setTimeout(function () {
+        dlg.close();
+        dlg.classList.remove('is-closing');
+      }, 180);
+    }
+
+    links.forEach(function (link, n) {
+      link.addEventListener('click', function (e) {
+        e.preventDefault();
+        open(n);
+      });
+    });
+    dlg.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-lb]');
+      if (!btn || btn.dataset.lb === 'close') close();
+      else show(current + (btn.dataset.lb === 'next' ? 1 : -1));
+    });
+    // Esc: fade out instead of disappearing at once.
+    dlg.addEventListener('cancel', function (e) {
+      e.preventDefault();
+      close();
+    });
+    // Arrow keys follow the reading direction; swipe follows the finger.
+    dlg.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var rtl = document.documentElement.dir === 'rtl';
+      show(current + ((e.key === 'ArrowLeft') === rtl ? 1 : -1));
+    });
+    var startX = null;
+    dlg.addEventListener(
+      'touchstart',
+      function (e) {
+        startX = e.touches[0].clientX;
+      },
+      { passive: true },
+    );
+    dlg.addEventListener(
+      'touchend',
+      function (e) {
+        if (startX === null) return;
+        var dx = e.changedTouches[0].clientX - startX;
+        startX = null;
+        if (Math.abs(dx) < 48) return;
+        var rtl = document.documentElement.dir === 'rtl';
+        show(current + ((dx > 0) === rtl ? 1 : -1));
+      },
+      { passive: true },
+    );
+    // Return focus without scrolling the page to the thumbnail.
+    dlg.addEventListener('close', function () {
+      links[current].focus({ preventScroll: true });
+    });
+  })();
+</script>
