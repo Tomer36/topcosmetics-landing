@@ -6,7 +6,7 @@
   "description": "Bilingual (Hebrew / Arabic) static landing site for Top Cosmetics Clinic",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/prune-dist.mjs",
     "preview": "astro preview",
     "logo": "node scripts/make-logo.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
