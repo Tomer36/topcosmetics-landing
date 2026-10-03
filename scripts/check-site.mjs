@@ -7,10 +7,20 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
 const ORIGIN = 'https://topcosmeticsclinic.com';
+// URL prefix of each language — keep in sync with `locales` in src/i18n/index.ts.
+const LOCALES = { ar: '', he: '/he' };
+const DEFAULT = 'ar';
+// Letters that must NOT appear on a page of that language.
+const OTHER_SCRIPT = { ar: '[\\u0590-\\u05FF]+', he: '[\\u0600-\\u06FF]+' };
+
 const walk = (dir) =>
   readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
     e.isDirectory() ? walk(join(dir, e.name)) : [join(dir, e.name)],
   );
+
+/** Language of a site path: the prefixed language whose prefix matches, otherwise the default. */
+const langOf = (path) =>
+  Object.keys(LOCALES).find((code) => LOCALES[code] && `${path}/`.startsWith(`${LOCALES[code]}/`)) ?? DEFAULT;
 
 const pages = walk('dist').filter((f) => f.endsWith('.html'));
 const titles = new Map();
@@ -21,10 +31,11 @@ for (const file of pages) {
   const rel = file.split('\\').join('/').replace(/^dist/, '').replace(/index\.html$/, '');
   if (rel.includes('404')) continue;
 
-  const isAr = rel.startsWith('/ar/');
-  const lang = isAr ? 'ar' : 'he';
-  const otherLang = isAr ? 'he' : 'ar';
-  const other = isAr ? rel.replace(/^\/ar/, '') : `/ar${rel}`;
+  const lang = langOf(rel);
+  const otherLang = Object.keys(LOCALES).find((code) => code !== lang);
+  const bare = rel.slice(LOCALES[lang].length); // the path without the language prefix
+  const other = LOCALES[otherLang] + bare;
+  const defaultPath = LOCALES[DEFAULT] + bare;
   const errs = [];
 
   const root = html.match(/<html lang="(\w+)" dir="(\w+)"/) ?? [];
@@ -36,14 +47,14 @@ for (const file of pages) {
   for (const [code, path] of [[lang, rel], [otherLang, other]]) {
     if (!html.includes(`hreflang="${code}" href="${ORIGIN}${path}"`)) errs.push(`missing hreflang ${code}`);
   }
-  if (!html.includes(`hreflang="x-default" href="${ORIGIN}${isAr ? other : rel}"`)) errs.push('x-default wrong');
+  if (!html.includes(`hreflang="x-default" href="${ORIGIN}${defaultPath}"`)) errs.push('x-default wrong');
   if (!existsSync(join('dist', other, 'index.html'))) errs.push(`no ${otherLang} version`);
   if (!html.includes(`href="${other}" lang="${otherLang}"`)) errs.push('language switcher target wrong');
 
   const internal = [...html.matchAll(/<a\b[^>]*href="(\/[^"#]*)[^"]*"[^>]*>/g)].filter(
     (m) => !m[0].includes('hreflang=') && !m[1].startsWith('/_astro'),
   );
-  const crossing = internal.filter((m) => m[1].startsWith('/ar/') !== isAr);
+  const crossing = internal.filter((m) => langOf(m[1]) !== lang);
   if (crossing.length) errs.push(`links to the other language: ${[...new Set(crossing.map((m) => m[1]))].join(', ')}`);
 
   const visible = html
@@ -51,7 +62,7 @@ for (const file of pages) {
     .replace(/<style[\s\S]*?<\/style>/g, '')
     .replace(/<a\b[^>]*hreflang[\s\S]*?<\/a>/g, '')
     .replace(/<[^>]+>/g, ' ');
-  const foreign = visible.match(isAr ? /[\u0590-\u05FF]+/g : /[\u0600-\u06FF]+/g);
+  const foreign = visible.match(new RegExp(OTHER_SCRIPT[lang], 'g'));
   if (foreign) errs.push(`text in the other script: ${[...new Set(foreign)].slice(0, 6).join(' ')}`);
   if (/\bundefined\b|\{\w+\}/.test(visible)) errs.push('unfilled placeholder or "undefined" in text');
 
@@ -61,7 +72,7 @@ for (const file of pages) {
 
   const messages = [...html.matchAll(/wa\.me\/\d+\?text=([^"]+)/g)].map((m) => decodeURIComponent(m[1]));
   if (!messages.length) errs.push('no WhatsApp link');
-  if (messages.some((m) => (isAr ? /[\u0590-\u05FF]/ : /[\u0600-\u06FF]/).test(m))) errs.push('WhatsApp message in the wrong language');
+  if (messages.some((m) => new RegExp(OTHER_SCRIPT[lang]).test(m))) errs.push('WhatsApp message in the wrong language');
   if (messages.some((m) => /\{\w+\}/.test(m))) errs.push('WhatsApp message has an unfilled placeholder');
 
   if (errs.length) {

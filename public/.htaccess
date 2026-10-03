@@ -11,6 +11,9 @@ Options -Indexes
   RewriteCond %{HTTP:X-Forwarded-Proto} !https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # Arabic used to live under /ar/ and is now the default language at /
+  RewriteRule ^ar/?(.*)$ /$1 [R=301,L]
+
   # www → non-www (one canonical host)
   RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
   RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]

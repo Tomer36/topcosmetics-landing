@@ -8,14 +8,17 @@ import ar from './ar.json';
 // Pages, hreflang tags, the sitemap and the language switcher pick it up automatically.
 // All CSS uses logical properties, so LTR needs no extra styles.
 export const locales = {
-  he: { dir: 'rtl', prefix: '', label: 'עב', name: 'עברית', og: 'he_IL', font: 'heebo' },
-  ar: { dir: 'rtl', prefix: 'ar', label: 'عر', name: 'العربية', og: 'ar_IL', font: 'noto-arabic' },
+  // The language with prefix '' is the one served at "/" — currently Arabic.
+  // To make another language the default: give it prefix '', give the old default a
+  // prefix, change `defaultLocale` below, and update LOCALES in scripts/check-site.mjs.
+  he: { dir: 'rtl', prefix: 'he', label: 'עב', name: 'עברית', og: 'he_IL', font: 'heebo' },
+  ar: { dir: 'rtl', prefix: '', label: 'عر', name: 'العربية', og: 'ar_IL', font: 'noto-arabic' },
 } as const;
 
 export type Locale = keyof typeof locales;
 export type Dictionary = typeof he;
 
-export const defaultLocale: Locale = 'he';
+export const defaultLocale: Locale = 'ar';
 export const localeCodes = Object.keys(locales) as Locale[];
 
 const dictionaries: Record<Locale, Dictionary> = { he, ar: ar as Dictionary };
@@ -58,7 +61,7 @@ export function memberText(locale: Locale, key: string): MemberText {
   return entry;
 }
 
-/** Locale-aware path with a trailing slash: localePath('ar', '/about/') → '/ar/about/'. */
+/** Locale-aware path with a trailing slash: localePath('he', '/about/') → '/he/about/'. */
 export function localePath(locale: Locale, path = '/'): string {
   const prefix = locales[locale].prefix;
   const clean = `/${path}/`.replace(/\/{2,}/g, '/');
