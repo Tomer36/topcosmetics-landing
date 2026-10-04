@@ -14,7 +14,7 @@ const t = useTranslations(locale);
 
 const links = [
   { href: localePath(locale, '/'), label: t.nav.home, current: path === '/' },
-  { href: `${localePath(locale, '/')}#services`, label: t.nav.services, current: path.startsWith('/services/') },
+  { href: localePath(locale, '/services/'), label: t.nav.services, current: path.startsWith('/services/') },
   { href: localePath(locale, '/about/'), label: t.nav.about, current: path === '/about/' },
   { href: localePath(locale, '/gallery/'), label: t.nav.gallery, current: path === '/gallery/' },
   { href: localePath(locale, '/contact/'), label: t.nav.contact, current: path === '/contact/' },

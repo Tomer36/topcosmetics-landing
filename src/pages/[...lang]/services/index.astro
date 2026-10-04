@@ -1,0 +1,55 @@
+---
+// "Treatments" page: every treatment as a row with its icon and a short description.
+import Base from '../../../layouts/Base.astro';
+import Icon from '../../../components/Icon.astro';
+import Cta from '../../../components/Cta.astro';
+import { services } from '../../../config/site';
+import { localePath, localeStaticPaths, serviceText, useTranslations, type Locale } from '../../../i18n';
+
+export const getStaticPaths = localeStaticPaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const rows = services.map((service) => ({ ...service, text: serviceText(locale, service.slug) }));
+---
+
+<Base locale={locale} title={t.servicesPage.seo.title} description={t.servicesPage.seo.description} path="/services/">
+  <section class="page-head">
+    <div class="container">
+      <h1>{t.home.services.title}</h1>
+      <p class="lead">{t.servicesPage.lead}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <ul class="service-rows">
+        {
+          rows.map((row) => (
+            <li>
+              <a class="card service-row" href={localePath(locale, `/services/${row.slug}/`)}>
+                <span class="icon-badge">
+                  <Icon name={row.icon} size={24} />
+                </span>
+                <span class="service-row-body">
+                  <h2>{row.text.name}</h2>
+                  <span class="service-row-text">{row.text.short}</span>
+                  <span class="more">
+                    {t.common.more}
+                    <Icon name="arrow" size={14} class="icon-dir" />
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <Cta locale={locale} />
+</Base>

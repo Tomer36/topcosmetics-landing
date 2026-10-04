@@ -21,3 +21,8 @@ export const galleryPhotos = Object.entries(files)
     };
   })
   .sort((a, b) => a.file.localeCompare(b.file, 'en', { numeric: true }));
+
+/** One gallery photo by its key ("massage-room"), or undefined if that file is gone. */
+export function galleryPhoto(key: string) {
+  return galleryPhotos.find((photo) => photo.key === key);
+}

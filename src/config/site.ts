@@ -54,6 +54,9 @@ export const site = {
     { day: 'sa', schema: 'Saturday', open: '09:30', close: '13:30' },
   ],
 
+  // Facial-care brands the clinic works with (shown on the About page).
+  productBrands: ['KB Pure', 'Biofor', 'Mary Cohr', 'Christina'],
+
   ogImage: '/og-image.jpg',
 
   // "Powered by" credit at the bottom of the footer.
@@ -79,12 +82,13 @@ export const services = [
 //   photo    = file name in src/assets/team/ (without extension, case-insensitive);
 //              until a photo exists, a placeholder icon is shown
 //   services = slugs of the treatments this person performs; they are listed on the
-//              person's page, and the person is shown on those treatment pages
+//              person's own page and on the About page
 // To add someone: add a line here and a matching block in both JSON files.
 export const team = [
   { key: 'abir', photo: 'Abir', services: ['facial-treatments', 'laser-hair-removal'] },
   { key: 'lara', photo: 'Lara', services: ['facial-treatments', 'massage'] },
-  { key: 'basel', photo: 'Basel', services: ['botox', 'dermal-fillers'] },
+  // Hidden for now — remove the // to bring Dr. Basel back (his texts and photo are still in the project):
+  // { key: 'basel', photo: 'Basel', services: ['botox', 'dermal-fillers'] },
 ] as const;
 
 // Legal pages (/accessibility/, /privacy/, /terms/). Texts: "legal" in src/i18n/*.json.

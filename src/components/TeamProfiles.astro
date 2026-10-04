@@ -1,0 +1,77 @@
+---
+// Fuller team section for the About page: one profile per person with a larger
+// photo, a short introduction and their treatments. (The home page shows the
+// compact cards from Therapists.astro; each person's own page has everything.)
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { services, team } from '../config/site';
+import { teamPhoto } from '../config/photos';
+import { localePath, memberText, serviceText, useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const profiles = team.map((item) => ({
+  key: item.key,
+  text: memberText(locale, item.key),
+  image: teamPhoto(item.photo),
+  treatments: services.filter((s) => (item.services as readonly string[]).includes(s.slug)),
+}));
+---
+
+<section class="section" id="team" aria-labelledby="team-title">
+  <div class="container">
+    <div class="section-head">
+      <h2 id="team-title">{t.about.team.title}</h2>
+    </div>
+    <div class="stack">
+      {
+        profiles.map(({ key, text: m, image, treatments }) => (
+          <article class:list={['card', 'profile', { 'no-photo': !image }]}>
+            {image && (
+              <Image
+                src={image}
+                alt={m.photoAlt}
+                width={400}
+                height={500}
+                fit="cover"
+                position="top"
+                widths={[200, 320, 400]}
+                sizes="(min-width: 700px) 220px, 120px"
+                format="webp"
+                quality={78}
+                loading="lazy"
+                decoding="async"
+              />
+            )}
+            <div class="profile-body">
+              <p class="chip">{m.eyebrow}</p>
+              <h3>{m.name}</h3>
+              <p class="role">{m.role}</p>
+              <p class="profile-text">{m.paragraphs[0]}</p>
+              {treatments.length > 0 && (
+                <ul class="chip-list">
+                  {treatments.map((s) => (
+                    <li>
+                      <a class="chip chip-link" href={localePath(locale, `/services/${s.slug}/`)}>
+                        {serviceText(locale, s.slug).name}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <a class="profile-more" href={localePath(locale, `/team/${key}/`)}>
+                {t.common.more}
+                <span class="sr-only"> – {m.name}</span>
+                <Icon name="arrow" size={14} class="icon-dir" />
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,15 +1,21 @@
 ---
-// Contact card: the address, four action tiles (WhatsApp, call, Waze, Google Maps)
-// and round links to the clinic's Google page and social profiles.
+// Contact card.
+//   compact (home page): address, two navigation links, the social profiles and a
+//                        link to the Contact page. WhatsApp and Call buttons are
+//                        shown on desktop only (phones have them in the sticky bar).
+//   full (Contact page): address and four action tiles (WhatsApp, call, Waze,
+//                        Google Maps). Social profiles are separate cards there
+//                        (SocialCards.astro).
 import Icon from './Icon.astro';
 import { site, telLink, whatsappLink } from '../config/site';
-import { useTranslations, type Locale } from '../i18n';
+import { localePath, useTranslations, type Locale } from '../i18n';
 
 interface Props {
   locale: Locale;
+  compact?: boolean;
 }
 
-const { locale } = Astro.props;
+const { locale, compact = false } = Astro.props;
 const t = useTranslations(locale);
 
 const tiles = [
@@ -22,8 +28,8 @@ const tiles = [
 const profiles = [
   { icon: 'instagram', label: t.common.instagram, href: site.social.instagram },
   { icon: 'facebook', label: t.common.facebook, href: site.social.facebook },
-  { icon: 'star', label: t.common.googlePage, href: site.googleProfile },
-].filter((p) => p.href) as { icon: 'instagram' | 'facebook' | 'star'; label: string; href: string }[];
+  { icon: 'google', label: 'Google', href: site.googleProfile },
+].filter((p) => p.href) as { icon: 'instagram' | 'facebook' | 'google'; label: string; href: string }[];
 ---
 
 <p class="contact-address">
@@ -34,34 +40,64 @@ const profiles = [
   </span>
 </p>
 
-<ul class="contact-tiles">
-  {
-    tiles.map((tile) => (
-      <li>
-        <a
-          class="contact-tile"
-          href={tile.href}
-          target={tile.external ? '_blank' : undefined}
-          rel={tile.external ? 'noopener' : undefined}
-        >
-          <span class="icon-badge">
-            <Icon name={tile.icon} size={20} />
-          </span>
-          <span class="tile-label">{tile.label}</span>
-          <span class="tile-sub">{tile.ltr ? <bdi dir="ltr">{tile.sub}</bdi> : tile.sub}</span>
-        </a>
-      </li>
-    ))
-  }
-</ul>
-
 {
-  profiles.length > 0 && (
-    <ul class="contact-profiles" aria-label={t.common.followUs}>
-      {profiles.map((profile) => (
+  compact ? (
+    <>
+      {/* Phones already have WhatsApp and Call in the sticky bar, so these two show on desktop only. */}
+      <div class="contact-actions desktop-only">
+        <a class="btn btn-primary" href={whatsappLink(t.wa.general)} target="_blank" rel="noopener">
+          <Icon name="whatsapp" />
+          {t.common.whatsapp}
+        </a>
+        <a class="btn btn-secondary" href={telLink}>
+          <Icon name="phone" />
+          <bdi dir="ltr">{site.phone.display}</bdi>
+        </a>
+      </div>
+      <div class="contact-nav">
+        <a class="btn btn-tonal btn-sm" href={site.maps.waze} target="_blank" rel="noopener">
+          <Icon name="navigation" />
+          Waze
+        </a>
+        <a class="btn btn-tonal btn-sm" href={site.maps.google} target="_blank" rel="noopener">
+          <Icon name="pin" />
+          Google Maps
+        </a>
+      </div>
+      {profiles.length > 0 && (
+        <ul class="contact-social" aria-label={t.common.followUs}>
+          {profiles.map((profile) => (
+            <li>
+              <a href={profile.href} target="_blank" rel="noopener">
+                <span class="icon-badge">
+                  <Icon name={profile.icon} size={20} />
+                </span>
+                {profile.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+      <a class="contact-all" href={localePath(locale, '/contact/')}>
+        {t.home.visit.more}
+        <Icon name="arrow" size={14} class="icon-dir" />
+      </a>
+    </>
+  ) : (
+    <ul class="contact-tiles">
+      {tiles.map((tile) => (
         <li>
-          <a href={profile.href} target="_blank" rel="noopener" aria-label={profile.label}>
-            <Icon name={profile.icon} size={20} />
+          <a
+            class="contact-tile"
+            href={tile.href}
+            target={tile.external ? '_blank' : undefined}
+            rel={tile.external ? 'noopener' : undefined}
+          >
+            <span class="icon-badge">
+              <Icon name={tile.icon} size={20} />
+            </span>
+            <span class="tile-label">{tile.label}</span>
+            <span class="tile-sub">{tile.ltr ? <bdi dir="ltr">{tile.sub}</bdi> : tile.sub}</span>
           </a>
         </li>
       ))}

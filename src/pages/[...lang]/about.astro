@@ -1,8 +1,11 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
+import { galleryPhoto } from '../../config/gallery';
+import { site } from '../../config/site';
 import Icon from '../../components/Icon.astro';
 import Cta from '../../components/Cta.astro';
-import Therapists from '../../components/Therapists.astro';
+import TeamProfiles from '../../components/TeamProfiles.astro';
 import { localeStaticPaths, useTranslations, type Locale } from '../../i18n';
 
 export const getStaticPaths = localeStaticPaths;
@@ -13,7 +16,9 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-const equipmentIcons = ['laser', 'hydra', 'shield'] as const;
+// technology, materials, products
+const equipmentIcons = ['zap', 'vial', 'award'] as const;
+const clinicPhoto = galleryPhoto('reception');
 ---
 
 <Base locale={locale} title={t.about.seo.title} description={t.about.seo.description} path="/about/">
@@ -27,16 +32,24 @@ const equipmentIcons = ['laser', 'hydra', 'shield'] as const;
   <section class="section" aria-labelledby="clinic-title">
     <div class="container">
       <div class="split split-wide">
-        <ul class="card stats">
-          {
-            t.home.stats.map((stat) => (
-              <li>
-                <strong>{stat.value}</strong>
-                <span>{stat.label}</span>
-              </li>
-            ))
-          }
-        </ul>
+        {
+          clinicPhoto && (
+            <Image
+              class="about-photo"
+              src={clinicPhoto.image}
+              alt={(t.gallery.alts as Record<string, string>)[clinicPhoto.key] ?? t.gallery.altFallback}
+              width={800}
+              height={600}
+              fit="cover"
+              widths={[400, 640, 800]}
+              sizes="(min-width: 900px) 440px, 100vw"
+              format="webp"
+              quality={70}
+              loading="eager"
+              decoding="async"
+            />
+          )
+        }
         <div class="card">
           <h2 id="clinic-title">{t.about.clinic.title}</h2>
           <div class="prose">
@@ -47,7 +60,7 @@ const equipmentIcons = ['laser', 'hydra', 'shield'] as const;
     </div>
   </section>
 
-  <Therapists locale={locale} />
+  <TeamProfiles locale={locale} />
 
   <section class="section" aria-labelledby="equipment-title">
     <div class="container">
@@ -70,6 +83,12 @@ const equipmentIcons = ['laser', 'hydra', 'shield'] as const;
           ))
         }
       </ul>
+      <div class="card brands">
+        <h3>{t.about.equipment.brandsTitle}</h3>
+        <ul class="chip-list">
+          {site.productBrands.map((brand) => <li class="chip chip-outline" lang="en" dir="ltr">{brand}</li>)}
+        </ul>
+      </div>
     </div>
   </section>
 

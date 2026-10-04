@@ -919,30 +919,130 @@ main > .section:last-child {
   font-size: 0.8125rem;
 }
 
-/* Google page + social profiles */
-.contact-profiles {
+/* compact card on the home page: two buttons, two navigation links */
+.contact-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-block-start: 16px;
+}
+
+.contact-nav {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   gap: 8px;
   margin-block-start: 14px;
-  padding-block-start: 14px;
+}
+
+/* Instagram / Facebook / Google, icon above the name */
+.contact-social {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-block-start: 16px;
+  padding-block-start: 16px;
   border-block-start: 1px solid var(--border);
 }
 
-.contact-profiles a {
+.contact-social a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-block: 4px;
+  color: var(--text);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.contact-social .icon-badge {
+  margin: 0;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.contact-social a:hover .icon-badge {
+  background: var(--brand);
+  color: #fff;
+}
+
+.contact-all {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--brand-soft);
+  gap: 4px;
+  min-height: 44px;
+  margin-block-start: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.contact-all:hover {
+  text-decoration: underline;
+}
+
+/* Contact page: Instagram, Facebook, Google */
+.social-title {
+  margin-block-end: 12px;
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+.social-cards {
+  display: grid;
+  gap: 12px;
+}
+
+.social-cards > li {
+  display: grid;
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.social-card:hover {
+  border-color: var(--brand-light);
+  color: var(--text);
+}
+
+.social-card .icon-badge {
+  flex: none;
+  margin: 0;
+}
+
+.social-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.social-name {
+  font-weight: 500;
+}
+
+.social-sub {
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.social-card:hover .contact-chev {
   color: var(--brand);
 }
 
-.contact-profiles a:hover {
-  background: var(--brand);
-  color: #fff;
+@media (min-width: 700px) {
+  .social-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
 }
 
 /* rows with an arrow — used for "who performs the treatment" */
@@ -1025,6 +1125,23 @@ main > .section:last-child {
   }
 }
 
+/* photo beside the clinic text (About page) */
+.about-photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-card);
+  background: var(--surface-muted);
+  box-shadow: var(--shadow-card);
+}
+
+@media (min-width: 900px) {
+  .about-photo {
+    height: 100%;
+    aspect-ratio: auto;
+  }
+}
+
 .breadcrumb {
   margin-block-end: 12px;
   font-size: 0.875rem;
@@ -1091,7 +1208,7 @@ main > .section:last-child {
   margin: 0;
 }
 
-.service-card h3 {
+.service-card :is(h2, h3) {
   font-size: 0.9375rem;
   line-height: 1.3;
 }
@@ -1704,10 +1821,10 @@ main > .section:last-child {
   text-decoration: underline;
 }
 
-/* wider screens: three centred cards */
+/* wider screens: centred cards side by side, however many people there are */
 @media (min-width: 700px) {
   .team-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
   }
 
@@ -1743,6 +1860,192 @@ main > .section:last-child {
   margin-block-start: 14px;
   padding-block-start: 0;
   border-block-start: 0;
+}
+
+/* ---------- Treatments page: rows with an icon ---------- */
+
+.service-rows {
+  display: grid;
+  gap: 12px;
+}
+
+.service-rows > li {
+  display: grid;
+}
+
+.service-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px;
+  color: var(--text);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.service-row:hover {
+  border-color: var(--brand-light);
+  color: var(--text);
+}
+
+.service-row .icon-badge {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  margin: 0;
+}
+
+.service-row-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.service-row h2 {
+  font-size: 1.0625rem;
+  font-weight: 500;
+}
+
+.service-row-text {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.service-row .more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-block-start: 2px;
+  color: var(--brand);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.service-row:hover .more {
+  text-decoration: underline;
+}
+
+@media (min-width: 700px) {
+  .service-rows {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .service-row {
+    gap: 18px;
+    padding: 20px;
+  }
+}
+
+/* icon above the title on a treatment page */
+.page-icon {
+  width: 52px;
+  height: 52px;
+  margin-block-end: 12px;
+}
+
+/* ---------- About: product brands ---------- */
+
+.brands {
+  margin-block-start: 16px;
+}
+
+.brands .chip-list {
+  margin-block-start: 12px;
+}
+
+.brands .chip {
+  min-height: 36px;
+  padding-inline: 16px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* ---------- About: team profiles ---------- */
+
+.profile {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+  padding: 16px;
+}
+
+.profile.no-photo {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.profile > img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: top;
+  border-radius: 12px;
+  background: var(--surface-muted);
+}
+
+.profile .chip {
+  min-height: 0;
+  padding: 1px 10px;
+  font-size: 0.75rem;
+}
+
+.profile h3 {
+  margin-block-start: 8px;
+  font-size: 1.25rem;
+  font-weight: 400;
+}
+
+.profile .role {
+  color: var(--brand);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.profile-text {
+  margin-block-start: 8px;
+  color: var(--text-muted);
+}
+
+.profile .chip-list {
+  margin-block-start: 12px;
+}
+
+.profile .chip-link {
+  min-height: 32px;
+  padding: 4px 12px;
+  text-decoration: none;
+}
+
+.profile .chip-link:hover {
+  background: var(--border);
+}
+
+.profile-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 44px;
+  margin-block-start: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.profile-more:hover {
+  text-decoration: underline;
+}
+
+@media (min-width: 700px) {
+  .profile {
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 28px;
+    align-items: center;
+    padding: 20px;
+  }
 }
 
 /* ---------- Team member page ---------- */

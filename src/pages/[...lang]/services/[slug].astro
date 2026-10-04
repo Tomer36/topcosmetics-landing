@@ -3,9 +3,9 @@ import Base from '../../../layouts/Base.astro';
 import Icon from '../../../components/Icon.astro';
 import ServiceCards from '../../../components/ServiceCards.astro';
 import Cta from '../../../components/Cta.astro';
-import { services, site, team, whatsappLink } from '../../../config/site';
+import { services, site, whatsappLink } from '../../../config/site';
 import { breadcrumbSchema, faqSchema, serviceSchema } from '../../../config/schema';
-import { fill, localeCodes, localePath, locales, memberText, serviceText, useTranslations, type Locale } from '../../../i18n';
+import { fill, localeCodes, localePath, locales, serviceText, useTranslations, type Locale } from '../../../i18n';
 
 export function getStaticPaths() {
   return localeCodes.flatMap((locale) =>
@@ -28,17 +28,14 @@ const path = `/services/${slug}/`;
 const url = new URL(localePath(locale, path), site.url).href;
 const homeUrl = new URL(localePath(locale, '/'), site.url).href;
 const waMessage = fill(t.wa.service, { service: s.name });
-// Team members who list this treatment in src/config/site.ts → team.
-const performers = team
-  .filter((member) => (member.services as readonly string[]).includes(slug))
-  .map((member) => ({ key: member.key, text: memberText(locale, member.key) }));
+const icon = services.find((item) => item.slug === slug)!.icon;
 
 const schema = [
   serviceSchema({ name: s.name, description: s.seo.description, url, lang: locale }),
   faqSchema(s.faq),
   breadcrumbSchema([
     { name: t.nav.home, url: homeUrl },
-    { name: t.nav.services, url: `${homeUrl}#services` },
+    { name: t.nav.services, url: new URL(localePath(locale, '/services/'), site.url).href },
     { name: s.name, url },
   ]),
 ];
@@ -57,10 +54,13 @@ const schema = [
       <nav class="breadcrumb" aria-label={t.nav.breadcrumb}>
         <ol>
           <li><a href={localePath(locale, '/')}>{t.nav.home}</a></li>
-          <li><a href={`${localePath(locale, '/')}#services`}>{t.nav.services}</a></li>
+          <li><a href={localePath(locale, '/services/')}>{t.nav.services}</a></li>
           <li aria-current="page">{s.name}</li>
         </ol>
       </nav>
+      <span class="icon-badge page-icon">
+        <Icon name={icon} size={26} />
+      </span>
       <h1>{s.name}</h1>
       <p class="lead">{s.short}</p>
       <div class="btn-row desktop-only">
@@ -87,30 +87,6 @@ const schema = [
             <ul class="chip-list">
               {s.types.items.map((item) => (
                 <li class="chip">{item}</li>
-              ))}
-            </ul>
-          </div>
-        )
-      }
-
-      {
-        performers.length > 0 && (
-          <div class="card">
-            <h2>{t.team.performedBy}</h2>
-            <ul class="contact-rows">
-              {performers.map(({ key, text: m }) => (
-                <li>
-                  <a class="contact-row performer" href={localePath(locale, `/team/${key}/`)}>
-                    <span class="icon-badge">
-                      <Icon name="user" size={18} />
-                    </span>
-                    <span class="contact-text">
-                      <span class="value">{m.name}</span>
-                      <span class="label">{m.role}</span>
-                    </span>
-                    <Icon name="arrow" size={16} class="icon-dir contact-chev" />
-                  </a>
-                </li>
               ))}
             </ul>
           </div>

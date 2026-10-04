@@ -1,0 +1,46 @@
+---
+// Contact page: one card each for Instagram, Facebook and the clinic's Google page.
+// A profile with an empty URL in src/config/site.ts is left out.
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+
+const cards = [
+  { icon: 'instagram', name: t.common.instagram, sub: site.instagramHandle, ltr: true, href: site.social.instagram },
+  { icon: 'facebook', name: t.common.facebook, sub: 'Top Cosmetics', ltr: true, href: site.social.facebook },
+  { icon: 'google', name: 'Google', sub: t.common.googlePage, ltr: false, href: site.googleProfile },
+].filter((c) => c.href) as { icon: 'instagram' | 'facebook' | 'google'; name: string; sub: string; ltr: boolean; href: string }[];
+---
+
+{
+  cards.length > 0 && (
+    <section aria-labelledby="social-title">
+      <h2 id="social-title" class="social-title">
+        {t.common.followUs}
+      </h2>
+      <ul class="social-cards">
+        {cards.map((card) => (
+          <li>
+            <a class="card social-card" href={card.href} target="_blank" rel="noopener">
+              <span class="icon-badge">
+                <Icon name={card.icon} size={20} />
+              </span>
+              <span class="social-text">
+                <span class="social-name">{card.name}</span>
+                <span class="social-sub">{card.ltr ? <bdi dir="ltr">{card.sub}</bdi> : card.sub}</span>
+              </span>
+              <Icon name="arrow" size={16} class="icon-dir contact-chev" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}

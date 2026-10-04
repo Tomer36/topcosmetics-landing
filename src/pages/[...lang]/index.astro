@@ -19,7 +19,8 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-const whyIcons = ['award', 'shield', 'lock', 'users'] as const;
+// personal attention, professional team, privacy, all skin types
+const whyIcons = ['heart', 'award', 'lock', 'users'] as const;
 ---
 
 <Base locale={locale} title={t.home.seo.title} description={t.home.seo.description} path="/">
@@ -97,6 +98,12 @@ const whyIcons = ['award', 'shield', 'lock', 'users'] as const;
           ))
         }
       </ul>
+      <div class="btn-row gallery-more">
+        <a class="btn btn-secondary" href={localePath(locale, '/about/')}>
+          {t.home.why.more}
+          <Icon name="arrow" class="icon-dir" />
+        </a>
+      </div>
     </div>
   </section>
 
@@ -130,7 +137,7 @@ const whyIcons = ['award', 'shield', 'lock', 'users'] as const;
         </div>
         <div class="card">
           <h3>{t.contact.detailsTitle}</h3>
-          <ContactDetails locale={locale} />
+          <ContactDetails locale={locale} compact />
         </div>
       </div>
     </div>

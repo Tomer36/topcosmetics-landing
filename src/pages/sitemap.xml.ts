@@ -8,6 +8,7 @@ const paths = [
   '/about/',
   '/gallery/',
   '/contact/',
+  '/services/',
   ...services.map((s) => `/services/${s.slug}/`),
   ...team.map((m) => `/team/${m.key}/`),
   ...legalPages.map((p) => `/${p}/`),
