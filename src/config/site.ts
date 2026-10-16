@@ -35,6 +35,8 @@ export const site = {
 
   // The clinic's Google Business Profile page (reviews, photos, directions).
   googleProfile: 'https://share.google/hfwirWEPWsSqrOS1o',
+  // Opens the "write a review" box on the Google Business Profile.
+  googleReview: 'https://g.page/r/CUMpIM8FiJnxEBM/review',
 
   // Leave a value empty to hide it.
   social: {

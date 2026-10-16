@@ -1,0 +1,45 @@
+---
+// Home page: asks visitors to leave a Google review. Hidden when `googleReview`
+// in src/config/site.ts is empty.
+import Icon from './Icon.astro';
+import { site } from '../config/site';
+import { useTranslations, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+{
+  site.googleReview && (
+    <section class="section" aria-labelledby="review-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="review-title">{t.home.review.title}</h2>
+          <p>{t.home.review.text}</p>
+        </div>
+        <div class="card review">
+          <div class="review-brand">
+            <span class="icon-badge">
+              <Icon name="google" size={20} />
+            </span>
+            <div>
+              <span class="review-name">Google</span>
+              <!-- Decorative: not a rating, just the familiar five-star cue. -->
+              <span class="review-stars" aria-hidden="true">
+                {[1, 2, 3, 4, 5].map(() => <Icon name="star" size={18} />)}
+              </span>
+            </div>
+          </div>
+          <a class="btn btn-primary" href={site.googleReview} target="_blank" rel="noopener">
+            <Icon name="star" />
+            {t.home.review.button}
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}

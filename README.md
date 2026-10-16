@@ -3,7 +3,7 @@
 Bilingual static website for **Top Cosmetics Clinic** (topcosmeticsclinic.com), Shefa-'Amr.
 
 - **Astro**, static output only. Plain CSS with CSS variables, about 30 lines of JavaScript.
-- **Hebrew** at `/` (default) and **Arabic** at `/ar/`, both RTL. English can be added later.
+- **Arabic** at `/` (default) and **Hebrew** at `/he/`, both RTL. English can be added later.
 - Deployed to **Hostinger** shared hosting: every push to `main` builds the site and uploads `dist/` by FTP.
 - No cookies, no trackers, no third-party requests by default.
 
@@ -28,6 +28,7 @@ npm run check:i18n # checks that ar.json has the same keys as he.json
 | All Arabic text | `src/i18n/ar.json` |
 | Languages (codes, direction, switcher labels) | `src/i18n/index.ts` |
 | Design tokens and all styles | `src/styles/global.css` |
+| Site structure and design rules | `DESIGN.md` |
 | `<head>`: SEO tags, hreflang, JSON-LD, fonts, optional GA4 | `src/layouts/Base.astro` |
 | schema.org builders (BeautySalon, Service, FAQPage, BreadcrumbList) | `src/config/schema.ts` |
 | Pages (one file serves every language) | `src/pages/[...lang]/` |
@@ -65,7 +66,7 @@ The copy is **draft placeholder text**. Both translation files start with a `_me
 5. **Parking and arrival notes** — `contact.arrival.items` in both JSON files is generic. Add the real details.
 6. **Equipment** — `about.equipment` does not name device models. Add them.
 7. **Photos** — the gallery is every image in `src/assets/gallery/`. To add a photo, drop a JPG, PNG or WebP file into that folder; file-name order is display order, so start names with a number (`13-new-room.jpg`). The home page shows the first six and `/gallery/` shows all. Descriptions are under `gallery.alts` in both JSON files, keyed by the file name without number and extension (`new-room`); without one a general description is used. The hero photo is set at the top of `src/pages/[...lang]/index.astro`.
-8. **Header logo and browser tab icon** — both are generated from the round logo with thickened lines (`npm run logo`), because the original hairline drawing all but disappears at those sizes. A version of the logo drawn for small sizes by the designer would look sharper.
+8. **Header logo and browser tab icon** — the header uses the horizontal logo and the tab icon uses the bold round logo (`npm run logo` generates both from `src/assets/photos/`).
 
 ## Logo and team photos
 

@@ -1702,6 +1702,48 @@ main > .section:last-child {
   }
 }
 
+/* ---------- Google review ---------- */
+.review {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.review-brand .icon-badge {
+  flex: none;
+  margin: 0;
+}
+
+.review-name {
+  display: block;
+  font-weight: 500;
+}
+
+.review-stars {
+  display: flex;
+  gap: 2px;
+  margin-block-start: 2px;
+  color: var(--brand);
+}
+
+.review-stars .icon {
+  fill: currentColor;
+}
+
+@media (min-width: 900px) {
+  .review {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
 /* ---------- Team ---------- */
 
 .member {

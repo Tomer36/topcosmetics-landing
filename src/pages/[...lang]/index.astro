@@ -7,6 +7,7 @@ import Hours from '../../components/Hours.astro';
 import ContactDetails from '../../components/ContactDetails.astro';
 import Therapists from '../../components/Therapists.astro';
 import Gallery from '../../components/Gallery.astro';
+import Review from '../../components/Review.astro';
 import { whatsappLink } from '../../config/site';
 import { localePath, localeStaticPaths, useTranslations, type Locale } from '../../i18n';
 import heroPhoto from '../../assets/gallery/07-front-desk.jpg';
@@ -123,6 +124,8 @@ const whyIcons = ['heart', 'award', 'lock', 'users'] as const;
       </div>
     </div>
   </section>
+
+  <Review locale={locale} />
 
   <section class="section" aria-labelledby="visit-title">
     <div class="container">
