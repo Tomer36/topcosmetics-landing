@@ -2271,8 +2271,11 @@ main > .section:last-child {
 
 /* ---------- Legal pages ---------- */
 
-.legal {
+.legal,
+.legal-heading {
+  width: 100%;
   max-width: 800px;
+  margin-inline: auto;
 }
 
 .legal section + section {

@@ -92,7 +92,7 @@ export const team = [
 ] as const;
 
 // Legal pages (/accessibility/, /privacy/, /terms/). Texts: "legal" in src/i18n/*.json.
-export const legalPages = ['accessibility', 'privacy', 'terms'] as const;
+export const legalPages = ['accessibility', 'privacy', 'terms', 'deposit-terms'] as const;
 
 export type ServiceSlug = (typeof services)[number]['slug'];
 

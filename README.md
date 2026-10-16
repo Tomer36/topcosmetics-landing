@@ -74,6 +74,22 @@ The copy is **draft placeholder text**. Both translation files start with a `_me
 
 ## Legal pages and cookie consent
 
+- Deposit/cancellation terms are at `/deposit-terms/` (Arabic, the current default)
+  and `/he/deposit-terms/` (Hebrew), with footer links, language alternates and
+  sitemap entries generated from `legalPages`. Copy lives under
+  `legal["deposit-terms"]` in both translation files. The contact buttons allow
+  customers to ask about cancellation/refunds without logging into the CRM.
+- The deposit text is a draft based on the supplied WhatsApp policy: the deposit
+  is deducted from treatment price and no-show retention is subject to disclosed
+  conditions and applicable law. The owner confirmed that cancellations received
+  at least 24 hours before the appointment qualify for a deposit refund. Refunds
+  are coordinated with the clinic, not executed automatically. No fixed deposit
+  amount, extra fee, blanket late-cancellation forfeiture, automatic transfer to
+  a rescheduled appointment or refund-processing deadline has been invented.
+  Review both translations and obtain legal review before publishing.
+  This informational page does not record acceptance
+  or process cancellations, payments or refunds automatically.
+
 - `/accessibility/`, `/privacy/` and `/terms/` exist in both languages and are linked from the footer. Texts: `legal` in both JSON files. Update `legal.updated` whenever they change.
 - These texts are **drafts and not legal advice**. Have a lawyer review them before launch. The accessibility statement still needs the real physical-access details of the clinic (parking, entrance, restroom) and, if the clinic has one, an email address for accessibility requests.
 - **Cookie banner** — by default the site sets no cookies, so no banner is shown. When `PUBLIC_GA4_ID` is set, a consent banner appears on the first visit, Google Analytics loads only after the visitor accepts, and a "cookie settings" link in the footer lets them change the choice.
