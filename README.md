@@ -69,7 +69,7 @@ The copy is **draft placeholder text**. Both translation files start with a `_me
 
 ## Logo and team photos
 
-- **Logo** — the original artwork is `src/assets/photos/Topcosmeticslogo_flat.png` and `Topcosmeticslogo_circle.png`. `npm run logo` derives the files the site uses: the header lettering (`src/assets/logo-wordmark.png`), the full logo for the footer (`src/assets/logo-full.png`), the share image (`public/og-image.jpg`) and `public/apple-touch-icon.png`. Run it again if the artwork changes.
+- **Logo** — the original artwork is `src/assets/photos/TopCosmetics-logo-horizontal.png` and `TopCosmetics-logo-circle-bold.png`. `npm run logo` derives the files the site uses: the logo for the header and footer (`src/assets/logo-full.png`), the share image (`public/og-image.jpg`) and the browser-tab icons (`public/favicon.png`, `public/apple-touch-icon.png`). Run it again if the artwork changes.
 - **Team** — the team section (home and About pages) shows a small card per person, and each person has their own page at `/team/<key>/`. To add someone: add a line to `team` in `src/config/site.ts` (key, photo file name, and the treatments they perform), add a block with the same key under `therapists` in both JSON files, and put their photo in `src/assets/team/`. Without a photo a placeholder icon is shown. A person who lists a treatment is shown on that treatment page under "who performs the treatment".
 
 ## Legal pages and cookie consent

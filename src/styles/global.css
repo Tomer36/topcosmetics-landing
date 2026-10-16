@@ -1731,7 +1731,7 @@ main > .section:last-child {
 
 .logo-footer img {
   width: auto;
-  height: 120px;
+  height: 72px;
 }
 
 @media (min-width: 900px) {
