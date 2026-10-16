@@ -140,7 +140,7 @@ Do this before the first deploy. The site's `.htaccess` redirects every visitor 
 
    | Variable | Default | When to set it |
    | --- | --- | --- |
-   | `FTP_SERVER_DIR` | `public_html/` | if the FTP account opens somewhere else — see below |
+   | `FTP_SERVER_DIR` | `./` | if the FTP account does not open inside `public_html` — see below |
    | `FTP_PROTOCOL` | `ftp` | set to `ftps` if your Hostinger plan accepts FTP over TLS |
    | `PUBLIC_GA4_ID` | empty | a GA4 measurement ID (`G-XXXXXXXXXX`) to turn analytics on |
 
@@ -148,8 +148,8 @@ Do this before the first deploy. The site's `.htaccess` redirects every visitor 
 
 Log in once with an FTP program (FileZilla) using the same account and look at the folder you land in:
 
-- You see a `public_html` folder → keep the default `public_html/`.
-- You are already inside `public_html` (you see its files) → set `FTP_SERVER_DIR` to `./`.
+- You are already inside `public_html` (you see its files) → keep the default `./`. This is the case for this site.
+- You see a `public_html` folder → set `FTP_SERVER_DIR` to `public_html/`.
 - You see `domains/` → set it to `domains/topcosmeticsclinic.com/public_html/`.
 
 The value must end with `/`. Delete Hostinger's `default.php` from `public_html` if it is there.

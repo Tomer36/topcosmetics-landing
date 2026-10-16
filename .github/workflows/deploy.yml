@@ -51,4 +51,4 @@ jobs:
           protocol: ${{ vars.FTP_PROTOCOL || 'ftp' }}
           local-dir: ./dist/
           # Must end with "/". See README → "Which folder does FTP upload to?"
-          server-dir: ${{ vars.FTP_SERVER_DIR || 'public_html/' }}
+          server-dir: ${{ vars.FTP_SERVER_DIR || './' }}
