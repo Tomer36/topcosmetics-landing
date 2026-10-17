@@ -2,6 +2,7 @@
 // Accessibility statement, privacy policy and terms of use.
 // Texts: "legal" in src/i18n/*.json. Slugs: legalPages in src/config/site.ts.
 import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
 import { legalPages, site, telLink, whatsappLink } from '../../config/site';
 import { fill, localeCodes, locales, useTranslations, type Locale } from '../../i18n';
 
@@ -55,10 +56,19 @@ const values = { phone: site.phone.display };
             </section>
           ))
         }
-        {page === 'deposit-terms' && <div class="contact-actions">
-          <a class="btn btn-primary" href={whatsappLink(t.legal['deposit-terms'].contactMessage)} target="_blank" rel="noopener">{t.common.whatsapp}</a>
-          <a class="btn btn-secondary" href={telLink}><bdi dir="ltr">{site.phone.display}</bdi></a>
-        </div>}
+        {/* Desktop only, like the rest of the site: phones have WhatsApp and Call in the sticky bar. */}
+        {page === 'deposit-terms' && (
+          <div class="contact-actions desktop-only">
+            <a class="btn btn-primary" href={whatsappLink(t.legal['deposit-terms'].contactMessage)} target="_blank" rel="noopener">
+              <Icon name="whatsapp" />
+              {t.common.whatsapp}
+            </a>
+            <a class="btn btn-secondary" href={telLink}>
+              <Icon name="phone" />
+              <bdi dir="ltr">{site.phone.display}</bdi>
+            </a>
+          </div>
+        )}
         <p class="updated">{'updated' in doc ? doc.updated : t.legal.updated}</p>
       </div>
     </div>

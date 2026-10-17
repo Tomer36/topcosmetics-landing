@@ -1,6 +1,7 @@
 // Derives the logo files the site uses from the original logo artwork:
 //   src/assets/photos/TopCosmetics-logo-horizontal.png   → src/assets/logo-full.png         (transparent margins trimmed; header, footer)
 //                                                        → public/og-image.jpg              (1200×630 share image)
+//   src/assets/photos/TopCosmetics-icon-face-square.png  → src/assets/logo-face.png         (margins trimmed; mobile header)
 //   src/assets/photos/TopCosmetics-logo-circle-bold.png  → public/favicon.png, public/apple-touch-icon.png
 // The round logo is already drawn with bold lines, so the tab icons are a plain resize.
 // Run with: npm run logo   (again whenever the logo artwork changes)
@@ -8,8 +9,10 @@ import sharp from 'sharp';
 
 const horizontal = 'src/assets/photos/TopCosmetics-logo-horizontal.png';
 const circle = 'src/assets/photos/TopCosmetics-logo-circle-bold.png';
+const face = 'src/assets/photos/TopCosmetics-icon-face-square.png';
 
 await sharp(horizontal).trim().png().toFile('src/assets/logo-full.png');
+await sharp(face).trim().png().toFile('src/assets/logo-face.png');
 
 const ogLogo = await sharp(horizontal).trim().resize({ width: 1000 }).png().toBuffer();
 await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#FFFFFF' } })

@@ -1771,6 +1771,11 @@ main > .section:last-child {
   height: 50px;
 }
 
+/* Mobile header shows the face icon only; desktop shows the full logo. */
+.logo-header .logo-full {
+  display: none;
+}
+
 .logo-footer img {
   width: auto;
   height: 72px;
@@ -1779,6 +1784,14 @@ main > .section:last-child {
 @media (min-width: 900px) {
   .logo-header img {
     height: 58px;
+  }
+
+  .logo-header .logo-full {
+    display: block;
+  }
+
+  .logo-header .logo-face {
+    display: none;
   }
 }
 
@@ -2299,6 +2312,44 @@ main > .section:last-child {
   margin-inline: auto;
 }
 
+/* Mobile: legal links in a tidy two-column grid (no stray separators when they wrap),
+   copyright and credit on their own short centred lines, clear of the floating
+   accessibility button in the corner. */
+@media (max-width: 899px) {
+  .footer-legal ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 16px;
+    margin-block-end: 8px;
+  }
+
+  .footer-legal li {
+    justify-content: center;
+  }
+
+  .footer-legal li + li::before {
+    content: none;
+  }
+
+  .footer-legal a,
+  .footer-legal button {
+    text-align: center;
+  }
+
+  .footer-bottom .credit .credit-sep {
+    display: none;
+  }
+
+  .footer-bottom .credit > span[lang] {
+    display: block;
+  }
+
+  /* keep the two lines together as one pair */
+  .footer-bottom .credit a {
+    padding-block: 4px;
+  }
+}
+
 /* the footer is only the brand block, centred */
 .footer-grid .footer-brand {
   display: flex;
@@ -2326,6 +2377,12 @@ main > .section:last-child {
 
 .legal h2 {
   margin-block-end: 8px;
+}
+
+/* body text, not a card subtitle: every paragraph in the same colour */
+.legal h2 + p {
+  margin-block-start: 0;
+  color: var(--text);
 }
 
 .legal p + p {

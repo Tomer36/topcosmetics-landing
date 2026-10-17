@@ -1,8 +1,9 @@
 ---
-// Header and footer both use the horizontal logo.
-// It is generated from the original artwork by `npm run logo`.
+// Header and footer use the horizontal logo; on mobile the header shows the face icon only.
+// Both are generated from the original artwork by `npm run logo`.
 import { Image } from 'astro:assets';
 import full from '../assets/logo-full.png';
+import face from '../assets/logo-face.png';
 import { localePath, useTranslations, type Locale } from '../i18n';
 
 interface Props {
@@ -14,10 +15,12 @@ const { locale, variant = 'header' } = Astro.props;
 const t = useTranslations(locale);
 const src = full;
 const height = variant === 'footer' ? 72 : 58;
+const faceHeight = 50;
 ---
 
 <a class:list={['logo', `logo-${variant}`]} href={localePath(locale, '/')}>
   <Image
+    class="logo-full"
     src={src}
     alt={t.site.name}
     height={height}
@@ -26,4 +29,18 @@ const height = variant === 'footer' ? 72 : 58;
     format="webp"
     loading={variant === 'footer' ? 'lazy' : 'eager'}
   />
+  {
+    variant === 'header' && (
+      <Image
+        class="logo-face"
+        src={face}
+        alt={t.site.name}
+        height={faceHeight}
+        width={Math.round((face.width / face.height) * faceHeight)}
+        densities={[1, 2, 3]}
+        format="webp"
+        loading="eager"
+      />
+    )
+  }
 </a>
