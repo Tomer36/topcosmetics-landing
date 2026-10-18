@@ -10,7 +10,7 @@
     "preview": "astro preview",
     "logo": "node scripts/make-logo.mjs",
     "check:i18n": "node scripts/check-i18n.mjs",
-    "check:site": "node scripts/check-site.mjs && node scripts/check-deposit-terms.mjs"
+    "check:site": "node scripts/check-site.mjs && node scripts/check-deposit-terms.mjs && node scripts/check-seo.mjs"
   },
   "engines": {
     "node": ">=22"

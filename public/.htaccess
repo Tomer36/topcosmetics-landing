@@ -6,17 +6,16 @@ Options -Indexes
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Force HTTPS (the SSL certificate must be active in hPanel before the first deploy)
-  RewriteCond %{HTTPS} !=on
-  RewriteCond %{HTTP:X-Forwarded-Proto} !https
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
   # Arabic used to live under /ar/ and is now the default language at /
-  RewriteRule ^ar/?(.*)$ /$1 [R=301,L]
+  # Match the complete prefix only; an absolute target cannot become //another-host.
+  RewriteRule ^ar(?:/(.*))?$ https://topcosmeticsclinic.com/$1 [R=301,L]
 
-  # www → non-www (one canonical host)
-  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
-  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+  # One fixed canonical host and HTTPS, without trusting a client-supplied
+  # X-Forwarded-Proto header. Cloudflare must use Full (strict), never Flexible.
+  # The SSL certificate must be active for both apex and www before deployment.
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} !^topcosmeticsclinic\.com$ [NC]
+  RewriteRule ^ https://topcosmeticsclinic.com%{REQUEST_URI} [L,R=301]
 </IfModule>
 
 # Cache: hashed assets for a year, HTML never stale
@@ -35,6 +34,13 @@ Options -Indexes
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  # Narrow, compatible policy: does not change the site's inline scripts/styles
+  # or optional consent-based analytics. A full script policy needs separate testing.
+  Header always set Content-Security-Policy "base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'"
+
+  <Files "404.html">
+    Header always set X-Robots-Tag "noindex, follow"
+  </Files>
 </IfModule>
 
 <IfModule mod_deflate.c>

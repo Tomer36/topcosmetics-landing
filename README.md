@@ -116,7 +116,7 @@ After editing a JSON file run `npm run check:i18n`.
 ### 2. Connect the domain on Hostinger
 
 1. hPanel → **Websites** → **Add website** → choose **Empty PHP/HTML website** → enter `topcosmeticsclinic.com`.
-2. If the domain is registered elsewhere, point it to Hostinger: either change the nameservers to the ones hPanel shows, or set the `A` record for `@` (and a `CNAME` for `www` → `topcosmeticsclinic.com`) to the IP hPanel shows.
+2. DNS is managed at **Cloudflare**. Confirm the `A` record for `@` against the IP in hPanel, with `www` a `CNAME` to `topcosmeticsclinic.com`. Keep `book`, `crm` and `intake` pointing to Kamatera, not Hostinger. Do not replace the Cloudflare nameservers or change records without the owner's approval.
 3. Wait until the domain opens Hostinger's default page. DNS changes can take up to 24 hours.
 
 ### 3. Enable SSL
@@ -161,16 +161,16 @@ The value must end with `/`. Delete Hostinger's `default.php` from `public_html`
 git push -u origin main
 ```
 
-GitHub → **Actions** shows the run. The first upload sends every file and takes a few minutes; later pushes only upload what changed. When it is green, open `https://topcosmeticsclinic.com/` and `https://topcosmeticsclinic.com/ar/`.
+GitHub → **Actions** shows the run. The first upload sends every file and takes a few minutes; later pushes only upload what changed. When it is green, open `https://topcosmeticsclinic.com/` (Arabic) and `https://topcosmeticsclinic.com/he/` (Hebrew).
 
 The workflow can also be started by hand: **Actions** → **Build and deploy to Hostinger** → **Run workflow**.
 
 ### 6. Google Search Console
 
 1. Open <https://search.google.com/search-console> → **Add property** → **Domain** → `topcosmeticsclinic.com`.
-2. Google shows a `TXT` record. Add it in hPanel → **Domains** → **DNS / Nameservers** → **Add record** (type `TXT`, name `@`), then press **Verify**. Verification can take a few minutes up to a day.
+2. Google shows a `TXT` record. With the owner's approval, add its exact value in **Cloudflare → DNS → Records** (type `TXT`, name `@`), then press **Verify**. Hostinger's DNS editor is not authoritative while Cloudflare manages the zone. Verification can take a few minutes up to a day.
 3. **Sitemaps** → enter `https://topcosmeticsclinic.com/sitemap.xml` → **Submit**.
-4. **URL inspection** → paste the home page URL → **Request indexing**. Repeat for `/ar/`.
+4. **URL inspection** → paste the home page URL → **Request indexing**. Repeat for `/he/`.
 5. Test the structured data at <https://search.google.com/test/rich-results> with the home page and one service page.
 
 ### 7. Google Business Profile
@@ -208,3 +208,19 @@ Pages under `/en/`, hreflang tags, the sitemap and the language switcher follow 
 1. Add `{ slug, icon }` to `services` in `src/config/site.ts` (icons are listed in `src/components/Icon.astro`).
 2. Add a block with the same slug under `"services"` in **both** JSON files.
 3. Run `npm run check:i18n`.
+
+## Infrastructure audit and filtering remediation
+
+See the [18 October 2026 audit](docs/infrastructure-audit-2026-10-18.md),
+[timestamped public evidence](docs/audit-evidence-2026-10-18.json) and
+[prepared Bezeq reclassification request](docs/bezeq-reclassification-request.md).
+Changes to DNS require owner approval. Cloudflare proxying requires verified origin
+TLS and Full (strict) mode. The landing redirect intentionally ignores untrusted
+forwarded-protocol headers. The structured business node omits the unverified
+founding year and approximate street-centre coordinates pending confirmation.
+The sitemap omits `lastmod` until actual per-page content dates are available.
+Run `npm run build` followed by `npm run check:site` before deployment; the latter
+also validates sitemap coverage, local links/assets and structured data.
+Confirm FTPS support and set `FTP_PROTOCOL=ftps` to avoid the existing plain-FTP
+workflow default. Live redirects and security headers require a Hostinger check;
+the local Astro preview server does not execute `.htaccess`.

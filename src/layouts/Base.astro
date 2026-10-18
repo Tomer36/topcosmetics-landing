@@ -117,7 +117,7 @@ const jsonLd = [businessSchema(), ...schema];
     {fontSet.files.map((f) => <link rel="preload" href={f.url} as="font" type="font/woff2" crossorigin />)}
     <style set:html={fontCss} />
 
-    {jsonLd.map((node) => <script is:inline type="application/ld+json" set:html={JSON.stringify(node)} />)}
+    {jsonLd.map((node) => <script is:inline type="application/ld+json" set:html={JSON.stringify(node).replace(/</g, '\\u003c')} />)}
 
     <script is:inline>
       // Apply saved accessibility choices before the page paints (see A11yMenu.astro).

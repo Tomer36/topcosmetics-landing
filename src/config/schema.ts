@@ -1,6 +1,6 @@
 // schema.org JSON-LD builders. The business node is built from src/config/site.ts
-// only, so name / address / phone / hours / geo are byte-identical on every page
-// and in every language.
+// only, so name / address / phone / hours are byte-identical on every page
+// and in every language. Unverified optional facts are omitted below.
 import { site } from './site';
 
 const businessId = `${site.url}/#business`;
@@ -16,7 +16,7 @@ export function businessSchema() {
     url: `${site.url}/`,
     image: `${site.url}${site.ogImage}`,
     telephone: site.phone.e164,
-    foundingDate: String(site.foundingYear),
+    // Founding year needs owner confirmation before use as a structured fact.
     address: {
       '@type': 'PostalAddress',
       streetAddress: site.address.street,
@@ -24,11 +24,8 @@ export function businessSchema() {
       addressRegion: site.address.region,
       addressCountry: site.address.country,
     },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: site.geo.lat,
-      longitude: site.geo.lng,
-    },
+    // site.geo is the street centre, not a verified clinic location. Do not
+    // publish it as the business's exact coordinates until the pin is confirmed.
     hasMap: site.maps.google,
     openingHoursSpecification: site.hours
       .filter((h) => h.open)

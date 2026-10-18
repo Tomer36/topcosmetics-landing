@@ -16,7 +16,8 @@ const paths = [
 const abs = (p: string) => new URL(p, site.url).href;
 
 export const GET: APIRoute = () => {
-  const lastmod = new Date().toISOString().slice(0, 10);
+  // Omit lastmod until real per-page content modification dates are available.
+  // A deployment timestamp incorrectly claims that every page changed.
   const urls = paths.flatMap((path) =>
     localeCodes.map((locale) => {
       const alternates = [
@@ -25,7 +26,7 @@ export const GET: APIRoute = () => {
         ),
         `    <xhtml:link rel="alternate" hreflang="x-default" href="${abs(localePath(defaultLocale, path))}"/>`,
       ].join('\n');
-      return `  <url>\n    <loc>${abs(localePath(locale, path))}</loc>\n    <lastmod>${lastmod}</lastmod>\n${alternates}\n  </url>`;
+      return `  <url>\n    <loc>${abs(localePath(locale, path))}</loc>\n${alternates}\n  </url>`;
     }),
   );
 

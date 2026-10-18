@@ -1,0 +1,274 @@
+{
+  "startedAt": "2026-10-18T20:35:37.934Z",
+  "completedAt": "2026-10-18T20:35:56.180Z",
+  "note": "Network-specific observations; failures do not prove origin downtime.",
+  "results": [
+    {
+      "label": "Cloudflare DNS topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:38.032Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"topcosmeticsclinic.com\",\"type\":1}],\"Answer\":[{\"name\":\"topcosmeticsclinic.com\",\"type\":1,\"TTL\":228,\"data\":\"147.93.73.209\"}]}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:38.122Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":1}],\"Answer\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":1,\"TTL\":65,\"data\":\"147.93.73.209\"}]}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS topcosmeticsclinic.com AAAA",
+      "checkedAt": "2026-10-18T20:35:38.136Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":28}],\"Authority\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":6,\"TTL\":1800,\"data\":\"hazel.ns.cloudflare.com. dns.cloudflare.com. 2416635573 10000 2400 604800 1800\"}],\"Comment\":\"Response from 172.64.35.236.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "HTTPS topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:38.157Z",
+      "exitCode": 60,
+      "stdout": "",
+      "stderr": "curl: (60) schannel: SNI or certificate check failed: SEC_E_WRONG_PRINCIPAL (0x80090322) - The target principal name is incorrect.\r\nMore details here: https://curl.se/docs/sslcerts.html\r\n\r\ncurl failed to verify the legitimacy of the server and therefore could not\r\nestablish a secure connection to it. To learn more about this situation and\r\nhow to fix it, please visit the webpage mentioned above.\r\n"
+    },
+    {
+      "label": "Google DNS www.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:38.390Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"www.topcosmeticsclinic.com.\",\"type\":1}],\"Answer\":[{\"name\":\"www.topcosmeticsclinic.com.\",\"type\":5,\"TTL\":300,\"data\":\"topcosmeticsclinic.com.\"},{\"name\":\"topcosmeticsclinic.com.\",\"type\":1,\"TTL\":300,\"data\":\"147.93.73.209\"}],\"Comment\":\"Response from 108.162.195.236.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS www.topcosmeticsclinic.com AAAA",
+      "checkedAt": "2026-10-18T20:35:38.410Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"www.topcosmeticsclinic.com.\",\"type\":28}],\"Authority\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":6,\"TTL\":1800,\"data\":\"hazel.ns.cloudflare.com. dns.cloudflare.com. 2416635573 10000 2400 604800 1800\"}],\"Comment\":\"Response from 172.64.34.157.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Cloudflare DNS www.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:38.472Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"www.topcosmeticsclinic.com\",\"type\":1}],\"Answer\":[{\"name\":\"www.topcosmeticsclinic.com\",\"type\":5,\"TTL\":300,\"data\":\"topcosmeticsclinic.com.\"},{\"name\":\"topcosmeticsclinic.com\",\"type\":1,\"TTL\":300,\"data\":\"147.93.73.209\"}]}",
+      "stderr": ""
+    },
+    {
+      "label": "HTTPS www.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:38.603Z",
+      "exitCode": 60,
+      "stdout": "",
+      "stderr": "curl: (60) schannel: SNI or certificate check failed: SEC_E_WRONG_PRINCIPAL (0x80090322) - The target principal name is incorrect.\r\nMore details here: https://curl.se/docs/sslcerts.html\r\n\r\ncurl failed to verify the legitimacy of the server and therefore could not\r\nestablish a secure connection to it. To learn more about this situation and\r\nhow to fix it, please visit the webpage mentioned above.\r\n"
+    },
+    {
+      "label": "HTTP topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:39.895Z",
+      "exitCode": 0,
+      "stdout": "HTTP/1.1 200 OK\r\nDate: Sun, 18 Oct 2026 20:35:39 GMT\r\nContent-Type: text/html\r\nContent-Length: 1541\r\nConnection: keep-alive\r\nLast-Modified: Thu, 19 Jun 2025 13:18:33 GMT\r\nSet-Cookie: [REDACTED]\r\nCache-Control: no-store, max-age=0\r\nETag: \"68540e29-605\"\r\nStrict-Transport-Security: max-age=31536000; includeSubDomains; preload\r\nX-Frame-Options: SAMEORIGIN\r\nX-Content-Type-Options: nosniff\r\nX-XSS-Protection: 1; mode=block\r\nContent-Security-Policy: default-src 'self'; frame-src 'self' https://www.google.com/; script-src * 'unsafe-inline' 'unsafe-eval' blob:; object-src 'none'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; connect-src *; style-src-elem * 'unsafe-inline';font-src *;img-src *;\r\nReferrer-Policy: strict-origin-when-cross-origin\r\nCross-Origin-Opener-Policy: same-origin\r\nCross-Origin-Resource-Policy: same-origin\r\nCross-Origin-Embedder-Policy: require-corp\r\nAccess-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, DELETE\r\nAccess-Control-Expose-Headers: Content-Length, Content-Type, X-Custom-Header\r\nAccess-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, timezone\r\nAccept-Ranges: bytes\r\n\r\n",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS crm.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:40.104Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"crm.topcosmeticsclinic.com.\",\"type\":1}],\"Answer\":[{\"name\":\"crm.topcosmeticsclinic.com.\",\"type\":1,\"TTL\":300,\"data\":\"81.28.7.42\"}],\"Comment\":\"Response from 2803:f800:50::6ca2:c3ec.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS crm.topcosmeticsclinic.com AAAA",
+      "checkedAt": "2026-10-18T20:35:40.345Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"crm.topcosmeticsclinic.com.\",\"type\":28}],\"Authority\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":6,\"TTL\":1800,\"data\":\"hazel.ns.cloudflare.com. dns.cloudflare.com. 2416635573 10000 2400 604800 1800\"}],\"Comment\":\"Response from 172.64.35.236.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Cloudflare DNS crm.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:40.471Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"crm.topcosmeticsclinic.com\",\"type\":1}],\"Answer\":[{\"name\":\"crm.topcosmeticsclinic.com\",\"type\":1,\"TTL\":300,\"data\":\"81.28.7.42\"}]}",
+      "stderr": ""
+    },
+    {
+      "label": "HTTPS crm.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:40.648Z",
+      "exitCode": 60,
+      "stdout": "",
+      "stderr": "curl: (60) schannel: SNI or certificate check failed: SEC_E_WRONG_PRINCIPAL (0x80090322) - The target principal name is incorrect.\r\nMore details here: https://curl.se/docs/sslcerts.html\r\n\r\ncurl failed to verify the legitimacy of the server and therefore could not\r\nestablish a secure connection to it. To learn more about this situation and\r\nhow to fix it, please visit the webpage mentioned above.\r\n"
+    },
+    {
+      "label": "Origin HTTPS topcosmeticsclinic.com (147.93.73.209, TLS verified)",
+      "checkedAt": "2026-10-18T20:35:43.169Z",
+      "exitCode": 28,
+      "stdout": "",
+      "stderr": "curl: (28) Connection timed out after 5014 milliseconds\r\n"
+    },
+    {
+      "label": "HTTP crm.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:43.200Z",
+      "exitCode": 0,
+      "stdout": "HTTP/1.1 200 OK\r\nDate: Sun, 18 Oct 2026 20:35:43 GMT\r\nContent-Type: text/html\r\nContent-Length: 1541\r\nConnection: keep-alive\r\nLast-Modified: Thu, 19 Jun 2025 13:18:33 GMT\r\nSet-Cookie: [REDACTED]\r\nCache-Control: no-store, max-age=0\r\nETag: \"68540e29-605\"\r\nStrict-Transport-Security: max-age=31536000; includeSubDomains; preload\r\nX-Frame-Options: SAMEORIGIN\r\nX-Content-Type-Options: nosniff\r\nX-XSS-Protection: 1; mode=block\r\nContent-Security-Policy: default-src 'self'; frame-src 'self' https://www.google.com/; script-src * 'unsafe-inline' 'unsafe-eval' blob:; object-src 'none'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; connect-src *; style-src-elem * 'unsafe-inline';font-src *;img-src *;\r\nReferrer-Policy: strict-origin-when-cross-origin\r\nCross-Origin-Opener-Policy: same-origin\r\nCross-Origin-Resource-Policy: same-origin\r\nCross-Origin-Embedder-Policy: require-corp\r\nAccess-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, DELETE\r\nAccess-Control-Expose-Headers: Content-Length, Content-Type, X-Custom-Header\r\nAccess-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, timezone\r\nAccept-Ranges: bytes\r\n\r\n",
+      "stderr": ""
+    },
+    {
+      "label": "Origin HTTPS crm.topcosmeticsclinic.com (81.28.7.42, TLS verified)",
+      "checkedAt": "2026-10-18T20:35:43.213Z",
+      "exitCode": 35,
+      "stdout": "",
+      "stderr": "curl: (35) Recv failure: Connection was reset\r\n"
+    },
+    {
+      "label": "Google DNS book.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:43.435Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"book.topcosmeticsclinic.com.\",\"type\":1}],\"Answer\":[{\"name\":\"book.topcosmeticsclinic.com.\",\"type\":1,\"TTL\":300,\"data\":\"81.28.7.42\"}],\"Comment\":\"Response from 108.162.194.157.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS book.topcosmeticsclinic.com AAAA",
+      "checkedAt": "2026-10-18T20:35:43.463Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"book.topcosmeticsclinic.com.\",\"type\":28}],\"Authority\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":6,\"TTL\":1800,\"data\":\"hazel.ns.cloudflare.com. dns.cloudflare.com. 2416635573 10000 2400 604800 1800\"}],\"Comment\":\"Response from 172.64.35.236.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Cloudflare DNS book.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:43.539Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"book.topcosmeticsclinic.com\",\"type\":1}],\"Answer\":[{\"name\":\"book.topcosmeticsclinic.com\",\"type\":1,\"TTL\":229,\"data\":\"81.28.7.42\"}]}",
+      "stderr": ""
+    },
+    {
+      "label": "Origin HTTPS www.topcosmeticsclinic.com (147.93.73.209, TLS verified)",
+      "checkedAt": "2026-10-18T20:35:43.640Z",
+      "exitCode": 28,
+      "stdout": "",
+      "stderr": "curl: (28) Connection timed out after 5005 milliseconds\r\n"
+    },
+    {
+      "label": "HTTPS book.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:43.692Z",
+      "exitCode": 60,
+      "stdout": "",
+      "stderr": "curl: (60) schannel: SNI or certificate check failed: SEC_E_WRONG_PRINCIPAL (0x80090322) - The target principal name is incorrect.\r\nMore details here: https://curl.se/docs/sslcerts.html\r\n\r\ncurl failed to verify the legitimacy of the server and therefore could not\r\nestablish a secure connection to it. To learn more about this situation and\r\nhow to fix it, please visit the webpage mentioned above.\r\n"
+    },
+    {
+      "label": "Origin HTTPS book.topcosmeticsclinic.com (81.28.7.42, TLS verified)",
+      "checkedAt": "2026-10-18T20:35:43.708Z",
+      "exitCode": 35,
+      "stdout": "",
+      "stderr": "curl: (35) Recv failure: Connection was reset\r\n"
+    },
+    {
+      "label": "Google DNS intake.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:43.891Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"intake.topcosmeticsclinic.com.\",\"type\":1}],\"Answer\":[{\"name\":\"intake.topcosmeticsclinic.com.\",\"type\":1,\"TTL\":300,\"data\":\"81.28.7.42\"}],\"Comment\":\"Response from 108.162.195.236.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS intake.topcosmeticsclinic.com AAAA",
+      "checkedAt": "2026-10-18T20:35:43.955Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"intake.topcosmeticsclinic.com.\",\"type\":28}],\"Authority\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":6,\"TTL\":1800,\"data\":\"hazel.ns.cloudflare.com. dns.cloudflare.com. 2416635573 10000 2400 604800 1800\"}],\"Comment\":\"Response from 108.162.194.157.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Cloudflare DNS intake.topcosmeticsclinic.com A",
+      "checkedAt": "2026-10-18T20:35:43.985Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"intake.topcosmeticsclinic.com\",\"type\":1}],\"Answer\":[{\"name\":\"intake.topcosmeticsclinic.com\",\"type\":1,\"TTL\":231,\"data\":\"81.28.7.42\"}]}",
+      "stderr": ""
+    },
+    {
+      "label": "HTTPS intake.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:44.168Z",
+      "exitCode": 60,
+      "stdout": "",
+      "stderr": "curl: (60) schannel: SNI or certificate check failed: SEC_E_WRONG_PRINCIPAL (0x80090322) - The target principal name is incorrect.\r\nMore details here: https://curl.se/docs/sslcerts.html\r\n\r\ncurl failed to verify the legitimacy of the server and therefore could not\r\nestablish a secure connection to it. To learn more about this situation and\r\nhow to fix it, please visit the webpage mentioned above.\r\n"
+    },
+    {
+      "label": "Origin HTTPS intake.topcosmeticsclinic.com (81.28.7.42, TLS verified)",
+      "checkedAt": "2026-10-18T20:35:44.240Z",
+      "exitCode": 35,
+      "stdout": "",
+      "stderr": "curl: (35) Recv failure: Connection was reset\r\n"
+    },
+    {
+      "label": "Google DNS topcosmeticsclinic.com NS",
+      "checkedAt": "2026-10-18T20:35:44.451Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":2}],\"Answer\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":2,\"TTL\":21360,\"data\":\"hazel.ns.cloudflare.com.\"},{\"name\":\"topcosmeticsclinic.com.\",\"type\":2,\"TTL\":21360,\"data\":\"sage.ns.cloudflare.com.\"}]}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS topcosmeticsclinic.com DS",
+      "checkedAt": "2026-10-18T20:35:44.675Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":43}],\"Authority\":[{\"name\":\"com.\",\"type\":6,\"TTL\":900,\"data\":\"a.gtld-servers.net. nstld.verisign-grs.com. 1792355719 1800 900 604800 900\"}],\"Comment\":\"Response from 192.55.83.30.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS topcosmeticsclinic.com DNSKEY",
+      "checkedAt": "2026-10-18T20:35:44.883Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":48}],\"Authority\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":6,\"TTL\":1800,\"data\":\"hazel.ns.cloudflare.com. dns.cloudflare.com. 2416635573 10000 2400 604800 1800\"}],\"Comment\":\"Response from 172.64.34.157.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Google DNS topcosmeticsclinic.com CAA",
+      "checkedAt": "2026-10-18T20:35:45.072Z",
+      "exitCode": 0,
+      "stdout": "{\"Status\":0,\"TC\":false,\"RD\":true,\"RA\":true,\"AD\":false,\"CD\":false,\"Question\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":257}],\"Authority\":[{\"name\":\"topcosmeticsclinic.com.\",\"type\":6,\"TTL\":1800,\"data\":\"hazel.ns.cloudflare.com. dns.cloudflare.com. 2416635573 10000 2400 604800 1800\"}],\"Comment\":\"Response from 172.64.34.157.\"}",
+      "stderr": ""
+    },
+    {
+      "label": "Registry RDAP",
+      "checkedAt": "2026-10-18T20:35:45.432Z",
+      "exitCode": 0,
+      "stdout": "{\"objectClassName\":\"domain\",\"handle\":\"3138480577_DOMAIN_COM-VRSN\",\"ldhName\":\"TOPCOSMETICSCLINIC.COM\",\"links\":[{\"value\":\"https:\\/\\/rdap.verisign.com\\/com\\/v1\\/domain\\/topcosmeticsclinic.com\",\"rel\":\"self\",\"href\":\"https:\\/\\/rdap.verisign.com\\/com\\/v1\\/domain\\/topcosmeticsclinic.com\",\"type\":\"application\\/rdap+json\"},{\"value\":\"https:\\/\\/rdap.verisign.com\\/com\\/v1\\/domain\\/topcosmeticsclinic.com\",\"rel\":\"related\",\"href\":\"https:\\/\\/rdap.hostinger.com\\/domain\\/TOPCOSMETICSCLINIC.COM\",\"type\":\"application\\/rdap+json\"}],\"status\":[\"client transfer prohibited\"],\"entities\":[{\"objectClassName\":\"entity\",\"handle\":\"1636\",\"roles\":[\"registrar\"],\"links\":[{\"href\":\"http:\\/\\/www.hostinger.com\",\"type\":\"text\\/html\",\"value\":\"https:\\/\\/rdap.hostinger.com\\/\",\"rel\":\"about\"}],\"publicIds\":[{\"type\":\"IANA Registrar ID\",\"identifier\":\"1636\"}],\"vcardArray\":[\"vcard\",[[\"version\",{},\"text\",\"4.0\"],[\"fn\",{},\"text\",\"HOSTINGER operations, UAB\"]]],\"entities\":[{\"objectClassName\":\"entity\",\"roles\":[\"abuse\"],\"vcardArray\":[\"vcard\",[[\"version\",{},\"text\",\"4.0\"],[\"fn\",{},\"text\",\"\"],[\"tel\",{\"type\":\"voice\"},\"uri\",\"tel:+37064503378\"],[\"email\",{},\"text\",\"abuse-tracker@hostinger.com\"]]]}]}],\"events\":[{\"eventAction\":\"registration\",\"eventDate\":\"2026-09-02T16:08:37Z\"},{\"eventAction\":\"expiration\",\"eventDate\":\"2028-09-02T16:08:37Z\"},{\"eventAction\":\"last changed\",\"eventDate\":\"2026-09-28T21:27:06Z\"},{\"eventAction\":\"last update of RDAP database\",\"eventDate\":\"2026-10-18T20:35:28Z\"}],\"secureDNS\":{\"delegationSigned\":false},\"nameservers\":[{\"objectClassName\":\"nameserver\",\"ldhName\":\"HAZEL.NS.CLOUDFLARE.COM\"},{\"objectClassName\":\"nameserver\",\"ldhName\":\"SAGE.NS.CLOUDFLARE.COM\"}],\"rdapConformance\":[\"rdap_level_0\",\"icann_rdap_technical_implementation_guide_1\",\"icann_rdap_response_profile_1\"],\"notices\":[{\"title\":\"Terms of Service\",\"description\":[\"Service subject to Terms of Use.\"],\"links\":[{\"href\":\"https:\\/\\/www.verisign.com\\/domain-names\\/registration-data-access-protocol\\/terms-service\\/index.xhtml\",\"type\":\"text\\/html\",\"value\":\"https:\\/\\/rdap.verisign.com\\/com\\/v1\\/domain\\/topcosmeticsclinic.com\",\"rel\":\"terms-of-service\"}]},{\"title\":\"Status Codes\",\"description\":[\"For more information on domain status codes, please visit https:\\/\\/icann.org\\/epp\"],\"links\":[{\"href\":\"https:\\/\\/icann.org\\/epp\",\"type\":\"text\\/html\",\"value\":\"https:\\/\\/rdap.verisign.com\\/com\\/v1\\/domain\\/topcosmeticsclinic.com\",\"rel\":\"glossary\"}]},{\"title\":\"RDDS Inaccuracy Complaint Form\",\"description\":[\"URL of the ICANN RDDS Inaccuracy Complaint Form: https:\\/\\/icann.org\\/wicf\"],\"links\":[{\"href\":\"https:\\/\\/icann.org\\/wicf\",\"type\":\"text\\/html\",\"value\":\"https:\\/\\/rdap.verisign.com\\/com\\/v1\\/domain\\/topcosmeticsclinic.com\",\"rel\":\"help\"}]}]}",
+      "stderr": ""
+    },
+    {
+      "label": "HTTP intake.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:45.879Z",
+      "exitCode": 0,
+      "stdout": "HTTP/1.1 200 OK\r\nDate: Sun, 18 Oct 2026 20:35:45 GMT\r\nContent-Type: text/html\r\nContent-Length: 1541\r\nConnection: keep-alive\r\nLast-Modified: Thu, 19 Jun 2025 13:18:33 GMT\r\nSet-Cookie: [REDACTED]\r\nCache-Control: no-store, max-age=0\r\nETag: \"68540e29-605\"\r\nStrict-Transport-Security: max-age=31536000; includeSubDomains; preload\r\nX-Frame-Options: SAMEORIGIN\r\nX-Content-Type-Options: nosniff\r\nX-XSS-Protection: 1; mode=block\r\nContent-Security-Policy: default-src 'self'; frame-src 'self' https://www.google.com/; script-src * 'unsafe-inline' 'unsafe-eval' blob:; object-src 'none'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'; connect-src *; style-src-elem * 'unsafe-inline';font-src *;img-src *;\r\nReferrer-Policy: strict-origin-when-cross-origin\r\nCross-Origin-Opener-Policy: same-origin\r\nCross-Origin-Resource-Policy: same-origin\r\nCross-Origin-Embedder-Policy: require-corp\r\nAccess-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, DELETE\r\nAccess-Control-Expose-Headers: Content-Length, Content-Type, X-Custom-Header\r\nAccess-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, timezone\r\nAccept-Ranges: bytes\r\n\r\n",
+      "stderr": ""
+    },
+    {
+      "label": "HTTP www.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:48.634Z",
+      "exitCode": 0,
+      "stdout": "HTTP/1.1 504 Gateway Time-out\r\nServer: awselb/2.0\r\nDate: Sun, 18 Oct 2026 20:35:48 GMT\r\nContent-Type: text/html\r\nContent-Length: 132\r\nConnection: keep-alive\r\n\r\n",
+      "stderr": ""
+    },
+    {
+      "label": "System DNS",
+      "checkedAt": "2026-10-18T20:35:49.266Z",
+      "exitCode": 0,
+      "stdout": "[\r\n    {\r\n        \"Name\":  \"topcosmeticsclinic.com\",\r\n        \"Type\":  5,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"IPAddress\":  null\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  28,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"2a05:d014:c59:1a01:adf6:811d:30b2:6d53\"\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  1,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"63.187.152.222\"\r\n    },\r\n    {\r\n        \"Name\":  \"www.topcosmeticsclinic.com\",\r\n        \"Type\":  5,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"IPAddress\":  null\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  28,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"2a05:d014:c59:1a01:adf6:811d:30b2:6d53\"\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  1,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"63.187.152.222\"\r\n    },\r\n    {\r\n        \"Name\":  \"crm.topcosmeticsclinic.com\",\r\n        \"Type\":  5,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"IPAddress\":  null\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  28,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"2a05:d014:c59:1a01:adf6:811d:30b2:6d53\"\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  1,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"63.187.152.222\"\r\n    },\r\n    {\r\n        \"Name\":  \"book.topcosmeticsclinic.com\",\r\n        \"Type\":  5,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"IPAddress\":  null\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  28,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"2a05:d014:c59:1a01:adf6:811d:30b2:6d53\"\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  1,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"63.187.152.222\"\r\n    },\r\n    {\r\n        \"Name\":  \"intake.topcosmeticsclinic.com\",\r\n        \"Type\":  5,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"IPAddress\":  null\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  28,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"2a05:d014:c59:1a01:adf6:811d:30b2:6d53\"\r\n    },\r\n    {\r\n        \"Name\":  \"ap-blockpage.prod.bzq.securingsam.com\",\r\n        \"Type\":  1,\r\n        \"TTL\":  30,\r\n        \"NameHost\":  null,\r\n        \"IPAddress\":  \"63.187.152.222\"\r\n    }\r\n]\r\n",
+      "stderr": ""
+    },
+    {
+      "label": "Existing URLScan records (no scan submitted)",
+      "checkedAt": "2026-10-18T20:35:50.164Z",
+      "exitCode": 0,
+      "stdout": "{\n  \"results\": [],\n  \"total\": 0,\n  \"took\": 4437,\n  \"has_more\": false,\n  \"search_date_limit_days\": 30\n}",
+      "stderr": ""
+    },
+    {
+      "label": "HTTP book.topcosmeticsclinic.com",
+      "checkedAt": "2026-10-18T20:35:53.720Z",
+      "exitCode": 0,
+      "stdout": "HTTP/1.1 504 Gateway Time-out\r\nServer: awselb/2.0\r\nDate: Sun, 18 Oct 2026 20:35:53 GMT\r\nContent-Type: text/html\r\nContent-Length: 132\r\nConnection: keep-alive\r\n\r\n",
+      "stderr": ""
+    },
+    {
+      "label": "Public HTTP CRM response body (may be filtering page)",
+      "checkedAt": "2026-10-18T20:35:56.180Z",
+      "exitCode": 0,
+      "stdout": "<html>\r\n<head><title>504 Gateway Time-out</title></head>\r\n<body>\r\n<center><h1>504 Gateway Time-out</h1></center>\r\n</body>\r\n</html>\r\n",
+      "stderr": ""
+    }
+  ],
+  "redaction": "Set-Cookie header values removed before commit; other public diagnostics retained."
+}
